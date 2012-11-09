@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class GetType {
     
-	public char getChar() {
+	public static char getChar() {
 		Scanner sc = new Scanner(System.in);
 		char choice = '\u0000';//(NULL)
 		try {
@@ -18,19 +18,20 @@ public class GetType {
 		
 	}
 	
-	public int getInt() {
+	public static int getInt() throws NumberFormatException {
 		Scanner sc = new Scanner(System.in);
 		int i = 0;
 		try {
 			i = sc.nextInt();
 		}
 		catch (Exception e) {
+			throw new NumberFormatException("Not an integer.");
 		}
 	
 		return i;
 	}
 	
-	public String getString() {
+	public static String getString() {
 		Scanner sc = new Scanner(System.in);
 		String text = null;
 		try {

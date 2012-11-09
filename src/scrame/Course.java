@@ -8,9 +8,6 @@ public class Course implements Serializable {
 	private String code;
 	private int au;
 	private int index;
-	
-	private static Menu newMenu = new Menu();
-	private static GetType get = new GetType();
 
 	public Course(String _title, String _code, int _au)
 	{
@@ -75,6 +72,65 @@ public class Course implements Serializable {
 		return list;
 	}
 	
+	public static void menuCourse()
+	{
+		String MenuTitle = "Course";
+		char choice = '\u0000';
+		
+		do {
+		  Menu.showMenu(MenuTitle);
+		  System.out.print("Enter choice: ");
+			choice = GetType.getChar();
+			
+			switch (choice) {
+				case '1':
+					Course.printCourseList();
+					break;
+				case '2':
+					System.out.println("\nAdding new course");
+					System.out.println("-------------------------");		
+					
+					System.out.print("Enter course title: ");		
+					String _title = GetType.getString();
+					
+					String _code = "";
+					boolean codeError = true;
+					
+					do {
+						System.out.print("Enter course code: ");
+						_code = GetType.getString();
+						if (_code.equals("q") || _code.equals("Q")) break;
+						if (Course.getCourseByCode(_code) != null) {
+							System.out.println("  Error: Another course with that code already exists. Please try again.");
+						}
+						else codeError = false;
+					} while (codeError);
+					
+					if (!codeError) {
+						System.out.print("Enter course AU: ");
+						int _au = GetType.getInt(); 				
+						List list = Course.getCourseList();
+						Course c = new Course(_title, _code, _au);
+						if (list == null) list = new ArrayList();
+						list.add(c);
+						c.save(list);			
+						System.out.println("\n  Course " + c.getTitle() + " added!");
+					}
+					
+					break;
+				case '0':
+					System.out.println("  Exiting to previous menu...");
+					break;
+				case 'q':
+				case 'Q':
+					Menu.terminateMenu();
+					break;
+				default:
+					System.out.println("  Invalid choice.");
+			}
+		} while (choice != 'q' && choice != 'Q' && choice != '0');
+	}
+	
 	public static void printCourseList() {
 		List list;
 		String choice = "f";
@@ -103,7 +159,7 @@ public class Course implements Serializable {
 			System.out.println("-----------------------");
 			
 			System.out.print("Enter choice: ");
-			choice = get.getString();
+			choice = GetType.getString();
 			
 			switch (choice) {
 				case "0":
@@ -111,7 +167,7 @@ public class Course implements Serializable {
 					break;
 				case "q":
 				case "Q":
-					newMenu.terminateMenu();
+					Menu.terminateMenu();
 					break;
 				default:
 					int choiceInt = 0;
@@ -157,7 +213,7 @@ public class Course implements Serializable {
 			System.out.println("---------------------");
 			System.out.print("Enter choice: ");
 
-			choice = get.getString();
+			choice = GetType.getString();
 			
 			switch (choice) {
 				case "0":
@@ -186,7 +242,7 @@ public class Course implements Serializable {
 					System.out.println();
 					System.out.println("  Are you sure you want to delete " +  c.getTitle() + "? This is irreversible.");
 					System.out.print("  Enter \"y\" to confirm: ");
-					confirm = get.getChar();
+					confirm = GetType.getChar();
 					if (confirm == 'y') {
 						// Update registered course list
 						StudentCourse.deleteCourse(c.getCode());
@@ -199,7 +255,7 @@ public class Course implements Serializable {
 					break;
 				case "q":
 				case "Q":
-					newMenu.terminateMenu();
+					Menu.terminateMenu();
 					break;
 			}
 		}  while (!choice.equals("0") && !choice.equals("q") && !choice.equals("Q") && !deleted);
@@ -211,7 +267,7 @@ public class Course implements Serializable {
 	// Update course title
 	public void updateTitle() {
 		System.out.print("\nEnter new title: ");
-		String _title = get.getString();
+		String _title = GetType.getString();
 
 		if (_title.length() > 0) {
 			if (_title.equals(getTitle())) {
@@ -233,7 +289,7 @@ public class Course implements Serializable {
 	// Update course code
 	public void updateCode() {
 		System.out.print("\nEnter new course code: ");
-		String _code = get.getString();
+		String _code = GetType.getString();
 
 		if (_code.length() > 0) {
 			if (_code.equals(code)) {
@@ -258,7 +314,7 @@ public class Course implements Serializable {
 	// Update course AU
 	public void updateAU() {
 		System.out.print("\nEnter new course AU: ");
-		int _au = get.getInt();
+		int _au = GetType.getInt();
 
 		if (_au == au) {
 			System.out.println("\n  No change detected. Original year of study preserved.");

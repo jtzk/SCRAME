@@ -4,24 +4,20 @@ import java.util.*;
 public class Student extends Person  {
 	private int year;
 	private String matric;
-	private String gender;
+	private char gender;
 	private String address;
-	
-	private static Menu newMenu = new Menu();
-	private static GetType get = new GetType();
-	
-	 
+
 	// Public constructors
 	public Student() {
 		super("", "", 0);
 		year = 1;
 		matric = "";
-		gender = "";
+		gender = 'M';
 		address = "";
 	}
 	
 	public Student(String _name, String _email, int _contact, int _year, 
-			String _matric, String _gender, String _address) {
+			String _matric, char _gender, String _address) {
 		
 		super(_name, _email, _contact);
 		year = _year;
@@ -47,7 +43,7 @@ public class Student extends Person  {
 	}	// Get student matric no
 
 	
-	public String getGender()
+	public char getGender()
 	{	
 		return gender;
 	}
@@ -95,11 +91,28 @@ public class Student extends Person  {
 		return list;
 	}
 	
+	// Internal processing
+	// Methods should prompt and get inputs from user
+	// 	 and return only when a valid input is provided.
+	private static int processYear() {
+		int _year = 0;
+		do {
+			System.out.print("Enter student's year of study: ");
+			try {
+				_year = GetType.getInt();
+				return _year;
+			}
+			catch (NumberFormatException e) {
+				System.out.println("\n  Error: Invalid year of study. Only digits are allowed.\n");
+			}
+		} while (true);
+	}
+	
 	// Public setters
-	// Set student name
+	// Update student name
 	public void updateName() {
 		System.out.print("\nEnter new name: ");
-		String _name = get.getString();
+		String _name = GetType.getString();
 
 		if (_name.length() > 0) {
 			if (_name.equals(getName())) {
@@ -119,10 +132,10 @@ public class Student extends Person  {
 		else System.out.println("\n  Invalid name.");
 	}
 		
-	// Set student matric no
+	// Update student matric no
 	public void updateMatric() {
 		System.out.print("\nEnter new matric no.: ");
-		String _matric = get.getString();
+		String _matric = GetType.getString();
 
 		if (_matric.length() > 0) {
 			if (_matric.equals(matric)) {
@@ -134,6 +147,8 @@ public class Student extends Person  {
 				if (studentIndex != -1) {
 					// Update registered course list
 					StudentCourse.updateMatric(matric, _matric);
+					
+					// Update student list
 					matric = _matric;
 					list.set(studentIndex, this);
 					save(list);
@@ -147,8 +162,7 @@ public class Student extends Person  {
 	
 	// Set student year
 	public void updateYear() {
-		System.out.print("\nEnter new year of study: ");
-		int _year = get.getInt();
+		int _year = processYear();
 
 		if (_year == year) {
 			System.out.println("\n  No change detected. Original year of study preserved.");
@@ -168,8 +182,82 @@ public class Student extends Person  {
 	
 	// Enroll in course
 	public void enroll(String _course) {
-		StudentCourse r = new StudentCourse();
-		r.register(matric, _course);
+		StudentCourse.register(matric, _course);
+	}
+	
+	public static void menuStudents() {
+		char choice = '1';
+		
+		do {
+			String MenuTitle="Student";
+			Menu.showMenu(MenuTitle);
+			
+			System.out.print("Enter choice: ");
+			choice = GetType.getChar();
+			
+			switch (choice) {
+				case '1':
+					Student.printStudentList();
+					break;
+				case '2':
+					System.out.println("\nAdding new student");
+					System.out.println("-------------------------");		
+					
+					// Process name
+					String _name = processName("student");
+					
+					// Process email
+					System.out.print("Enter student's email address: ");			
+					String _email = GetType.getString();
+					
+					// Process contact
+					int _contact = processContactNumber("student");
+					
+					// Process gender
+					char _gender = processGender("student");
+					
+					// Process address
+					System.out.print("Enter student's address: ");			
+					String _address = GetType.getString();
+					
+					// Process matric
+					String _matric = "";
+					boolean matricError = true;
+					
+					do {
+						System.out.print("Enter student's matriculation no.: ");
+						_matric = GetType.getString();
+						if (_matric.equals("q") || _matric.equals("Q")) break;
+						if (_matric.length() == 0) System.out.println("\n  Error: Matric no. is required. 'Q' to exit adding student.\n");
+						else if (Student.getStudentByMatric(_matric) != null) {
+							System.out.println("\n  Error: Another student with that matric no. already exists. Please try again.");
+						}
+						else matricError = false;
+					} while (matricError);
+					
+					if (!matricError) {
+						int _year = processYear();
+						
+						List list = Student.getStudentList();
+						Student s = new Student(_name, _email, _contact, _year, _matric, _gender, _address);								
+						if (list == null) list = new ArrayList();
+						list.add(s);
+						s.save(list);			
+						System.out.println("\n  Student " + s.getName() + " added!");
+					}
+					
+					break;
+				case '0':
+					System.out.println("  Exiting to previous menu...");
+					break;
+				case 'q':
+				case 'Q':
+					Menu.terminateMenu();
+					break;
+				default:
+					System.out.println("  Invalid choice.");
+			}
+		} while (choice != '0' && choice != 'q' && choice != 'Q');
 	}
 	
 	public static void printStudentList() {
@@ -200,7 +288,7 @@ public class Student extends Person  {
 			System.out.println("-----------------------");
 			
 			System.out.print("Enter choice: ");
-			choice = get.getString();
+			choice = GetType.getString();
 			
 			switch (choice) {
 				case "0":
@@ -208,7 +296,7 @@ public class Student extends Person  {
 					break;
 				case "q":
 				case "Q":
-					newMenu.terminateMenu();
+					Menu.terminateMenu();
 					break;
 				default:
 					int choiceInt = 0;
@@ -242,6 +330,10 @@ public class Student extends Person  {
 			System.out.println("Name: " + s.getName());
 			System.out.println("Matric: " + s.getMatric());
 			System.out.println("Year: " + s.getYear());
+			System.out.println("Gender: " + s.getGender());
+			System.out.println("Email: " + s.getEmail());
+			System.out.println("Contact: " + s.getContact());
+			System.out.println("Address: " + s.getAddress());
 			System.out.println();
 			System.out.println("1) Edit name");
 			System.out.println("2) Edit matric no.");
@@ -254,7 +346,7 @@ public class Student extends Person  {
 			System.out.println("---------------------");
 			System.out.print("Enter choice: ");
 
-			choice = get.getString();
+			choice = GetType.getString();
 			
 			switch (choice) {
 				case "0":
@@ -289,7 +381,7 @@ public class Student extends Person  {
 						System.out.println("-----------------------");
 						System.out.print("Enter choice: ");
 						
-						int courseChoice = get.getInt() - 1;
+						int courseChoice = GetType.getInt() - 1;
 						if ( courseChoice >= 0 && courseChoice < courseList.size() ) {
 							c = (Course) courseList.get(courseChoice);
 							StudentCourse.register(s.getMatric(), c.getCode());
@@ -304,7 +396,7 @@ public class Student extends Person  {
 					System.out.println();
 					System.out.println("  Are you sure you want to delete " +  s.getName() + "? This is irreversible.");
 					System.out.print("  Enter \"y\" to confirm: ");
-					confirm = get.getChar();
+					confirm = GetType.getChar();
 					if (confirm == 'y') {
 						// Update registered course list
 						StudentCourse.deleteStudent(s.getMatric());
@@ -318,7 +410,7 @@ public class Student extends Person  {
 					break;
 				case "q":
 				case "Q":
-					newMenu.terminateMenu();
+					Menu.terminateMenu();
 					break;
 			}
 		}  while (!choice.equals("0") && !choice.equals("q") && !choice.equals("Q") && !deleted);
