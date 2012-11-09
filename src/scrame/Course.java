@@ -4,10 +4,11 @@ import java.io.Serializable;
 import java.util.*;
 
 public class Course implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	private String title;
 	private String code;
 	private int au;
-	private int index;
 
 	public Course(String _title, String _code, int _au)
 	{
@@ -191,9 +192,8 @@ public class Course implements Serializable {
 	
 	private static boolean showCourse(Course c) {
 		String choice = "";
-
 		boolean deleted = false;
-		List list = getCourseList();
+		
 		do {
 			System.out.println();
 			System.out.println("Course");
@@ -248,6 +248,8 @@ public class Course implements Serializable {
 						StudentCourse.deleteCourse(c.getCode());
 						String deletedTitle = c.getTitle();
 						String deletedCode = c.getCode();
+						
+						List list = getCourseList();
 						deleted = list.remove(c);
 						c.save(list);
 						System.out.println("\n  Deleted " + deletedTitle + " (" + deletedCode + ")");

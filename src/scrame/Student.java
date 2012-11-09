@@ -1,7 +1,9 @@
 package scrame;
-import java.io.*;
 import java.util.*;
+
 public class Student extends Person  {
+	private static final long serialVersionUID = 1L;
+	
 	private int year;
 	private String matric;
 	private char gender;
@@ -27,15 +29,11 @@ public class Student extends Person  {
 	}
 	
 	// Public getters
+	// Get student year
 	public int getYear() 
 	{ 
 		return year;	
-	}		// Get student year
-	
-	public int setYear(int Year) 
-	{ 
-		return year;	
-	}		// set student year
+	}
 	
 	public String getMatric() 
 	{ 
@@ -109,6 +107,21 @@ public class Student extends Person  {
 	}
 	
 	// Public setters
+	// Set year of study
+	public void setYear(int _year) { 
+		year = _year;	
+	}
+	
+	// Set gender
+	public void setGender(char _gender) {
+		gender = _gender;
+	}
+	
+	// Set address
+	public void setAddress(String _address) {
+		address = _address;
+	}
+	
 	// Update student name
 	public void updateName() {
 		System.out.print("\nEnter new name: ");
@@ -207,11 +220,10 @@ public class Student extends Person  {
 					String _name = processName("student");
 					
 					// Process email
-					System.out.print("Enter student's email address: ");			
-					String _email = GetType.getString();
+					String _email = processEmail("student");
 					
 					// Process contact
-					int _contact = processContactNumber("student");
+					int _contact = processContact("student");
 					
 					// Process gender
 					char _gender = processGender("student");
@@ -219,6 +231,7 @@ public class Student extends Person  {
 					// Process address
 					System.out.print("Enter student's address: ");			
 					String _address = GetType.getString();
+					if (_address.length() == 0) _address = "NONE";
 					
 					// Process matric
 					String _matric = "";
@@ -322,7 +335,6 @@ public class Student extends Person  {
 		String choice = "";
 		boolean deleted = false;
 		
-		List list = getStudentList();
 		do {
 			System.out.println();
 			System.out.println("Student");
@@ -335,10 +347,8 @@ public class Student extends Person  {
 			System.out.println("Contact: " + s.getContact());
 			System.out.println("Address: " + s.getAddress());
 			System.out.println();
-			System.out.println("1) Edit name");
-			System.out.println("2) Edit matric no.");
-			System.out.println("3) Edit year of study");
-			System.out.println("4) Register for a course");
+			System.out.println("1) Edit student");
+			System.out.println("2) Register for a course");
 			System.out.println("D) Delete student");
 			System.out.println();
 			System.out.println("0) Back to student list");
@@ -354,25 +364,19 @@ public class Student extends Person  {
 					break;
 					
 				case "1":
-					s.updateName();
+					Student.editStudent(s);
 					break;
 					
 				case "2":
-					s.updateMatric();
-					break;
-
-				case "3":
-					s.updateYear();
-					break;
-					
-				case "4":
-					System.out.println("\nSelect a course from the list");
-					System.out.println("-----------------------");
 					
 					List courseList = Course.getCourseList();
-					Course c;
 					
 					if (courseList != null && courseList.size() > 0) {
+						System.out.println("\nSelect a course from the list");
+						System.out.println("-----------------------");
+						
+						Course c;
+						
 						for (int i = 0; i < courseList.size(); i++) {
 							c = (Course) courseList.get(i);
 							System.out.println(i + 1 + ") " + c.getCode() + " " + c.getTitle());
@@ -386,6 +390,10 @@ public class Student extends Person  {
 							c = (Course) courseList.get(courseChoice);
 							StudentCourse.register(s.getMatric(), c.getCode());
 						}
+					}
+					
+					else {
+						System.out.println("\nNo courses are available in the system.");
 					}
 					
 					break;
@@ -403,6 +411,8 @@ public class Student extends Person  {
 						
 						String deletedName = s.getName();
 						String deletedMatric = s.getMatric();
+						
+						List list = getStudentList();
 						deleted = list.remove(s);
 						s.save(list);
 						System.out.println("\n  Deleted " + deletedName + " (" + deletedMatric + ")");
@@ -416,6 +426,98 @@ public class Student extends Person  {
 		}  while (!choice.equals("0") && !choice.equals("q") && !choice.equals("Q") && !deleted);
 		
 		return deleted;
+	}
+	
+	private static void editStudent(Student s) {
+		String choice = "";
+
+		do {
+			System.out.println();
+			System.out.println("Edit Student");
+			System.out.println("---------------------");
+			System.out.println("1) Name: " + s.getName());
+			System.out.println("2) Matric: " + s.getMatric());
+			System.out.println("3) Year: " + s.getYear());
+			System.out.println("4) Gender: " + s.getGender());
+			System.out.println("5) Email: " + s.getEmail());
+			System.out.println("6) Contact: " + s.getContact());
+			System.out.println("7) Address: " + s.getAddress());
+			System.out.println();
+			System.out.println("0) Back to student list");
+			System.out.println("Q) Exit program");
+			System.out.println("---------------------");
+			System.out.print("Enter choice: ");
+			
+			choice = GetType.getString();
+			
+			switch (choice) {
+				case "0":
+					System.out.println("  Exiting to student list...");
+					break;
+				
+				// Edit name
+				case "1":
+					s.updateName();
+					break;
+				
+				// Edit matric no.
+				case "2":
+					s.updateMatric();
+					break;
+				
+				// Edit year
+				case "3":
+					s.updateYear();
+					break;
+					
+				// Edit gender
+				case "4":
+					char _gender = processGender("student");
+					if (s.getGender() == _gender) System.out.println("\n  No change detected. Original gender preserved.");
+					else {
+						s.setGender(_gender);
+						System.out.println("\n  Changed student's gender to: " + s.getGender());
+					}
+					break;
+					
+				// Edit email
+				case "5":
+					String _email = processEmail("student");
+					if (s.getEmail().equals(_email)) System.out.println("\n  No change detected. Original email preserved.");
+					else {
+						s.setEmail(_email);
+						System.out.println("\n  Changed student's email to: " + s.getEmail());
+					}
+					break;
+					
+				// Edit contact
+				case "6":
+					int _contact = processContact("student");
+					if (s.getContact() == _contact) System.out.println("\n  No change detected. Original contact preserved.");
+					else {
+						s.setContact(_contact);
+						System.out.println("\n  Changed student's contact to: " + s.getContact());
+					}
+					break;
+					
+				// Edit address
+				case "7":
+					System.out.print("Enter student's address: ");
+					String _address = GetType.getString();
+					if (_address.length() == 0) _address = "NONE";
+					if (s.getAddress().equals(_address)) System.out.println("\n  No change detected. Original address preserved.");
+					else {
+						s.setAddress(_address);
+						System.out.println("\n  Changed student's address to: " + s.getAddress());
+					}
+					break;
+				
+				case "q":
+				case "Q":
+					Menu.terminateMenu();
+					break;
+			}
+		} while (!choice.equals("0") && !choice.equals("q") && !choice.equals("Q"));
 	}
 	
 	public void save(List list) {

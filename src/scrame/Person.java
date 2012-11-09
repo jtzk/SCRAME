@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 //default class Person
 public class Person implements Serializable{
-	//variable
+	private static final long serialVersionUID = 1L;
+	
 	private String name;
 	private String email;
 	private int contact;
@@ -16,26 +17,46 @@ public class Person implements Serializable{
 		contact = _contact;
 	}
 	
+	// Getter methods
+	// Gets name
 	public String getName()
 	{
 		return name; 
 	}
 	
-	public void setName(String _name)
-	{
-		name = _name;
-	}
-	
+	// Gets email
 	public String getEmail()
 	{
 		return email;
 	}
 	
+	// Gets contact no.
 	public int getContact()
 	{
 		return contact;
 	}
 	
+	// Setter methods
+	// Sets name
+	public void setName(String _name)
+	{
+		name = _name;
+	}
+	
+	// Sets email
+	public void setEmail(String _email)
+	{
+		email = _email;
+	}
+	
+	// Sets contact no.
+	public void setContact(int _contact)
+	{
+		contact = _contact;
+	}
+	
+	// Processing methods
+	// Prompts for and gets input for name
 	public static String processName(String person) {
 		String _name = "";
 		do {
@@ -51,7 +72,8 @@ public class Person implements Serializable{
 		} while (true);
 	}
 	
-	public static int processContactNumber(String person) {
+	// Prompts for and gets input for contact no.
+	public static int processContact(String person) {
 		int _contact;
 		do {
 			try {
@@ -65,6 +87,7 @@ public class Person implements Serializable{
 		} while (true);
 	}
 	
+	// Prompts for and gets input for gender
 	public static char processGender(String person) {
 		char _gender;
 		
@@ -76,6 +99,18 @@ public class Person implements Serializable{
 			else {
 				System.out.println("\n  Error; Invalid gender. Only 'M' or 'F' is allowed.\n");
 			}
+		} while (true);
+	}
+	
+	// Prompts for and gets input for email
+	public static String processEmail(String person) {
+		String _email;
+		
+		do {
+		System.out.print("Enter " + person + "'s email: ");			
+			_email = GetType.getString();
+			if (_email.length() > 0) return _email;
+			else return "NONE";
 		} while (true);
 	}
 }
