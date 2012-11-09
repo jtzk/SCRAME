@@ -41,11 +41,10 @@ public class ScrameApp {
 		  newMenu.showMenu(MenuTitle);
 		  System.out.print("Enter choice: ");
 			choice = GetTypeFc.getChar();
-			Course c = new Course("", "", 0);
 			
 			switch (choice) {
 				case '1':
-					c.printCourseList();
+					Course.printCourseList();
 					break;
 				case '2':
 					System.out.println("\nAdding new course");
@@ -61,7 +60,7 @@ public class ScrameApp {
 						System.out.print("Enter course code: ");
 						_code = GetTypeFc.getString();
 						if (_code.equals("q") || _code.equals("Q")) break;
-						if (c.getCourseByCode(_code) != null) {
+						if (Course.getCourseByCode(_code) != null) {
 							System.out.println("  Error: Another course with that code already exists. Please try again.");
 						}
 						else codeError = false;
@@ -70,10 +69,8 @@ public class ScrameApp {
 					if (!codeError) {
 						System.out.print("Enter course AU: ");
 						int _au = GetTypeFc.getInt(); 				
-						List list = c.getCourseList();
-						c.setTitle(_title);
-						c.setCode(_code);
-						c.setAU(_au);
+						List list = Course.getCourseList();
+						Course c = new Course(_title, _code, _au);
 						if (list == null) list = new ArrayList();
 						list.add(c);
 						c.save(list);			
@@ -138,7 +135,7 @@ public class ScrameApp {
 			
 			switch (choice) {
 				case '1':
-					listStudents();
+					Student.printStudentList();
 					break;
 				case '2':
 					System.out.println("\nAdding new student");
@@ -161,7 +158,7 @@ public class ScrameApp {
 						System.out.print("Enter student's matriculation no.: ");
 						_matric = GetTypeFc.getString();
 						if (_matric.equals("q") || _matric.equals("Q")) break;
-						if (getStudentByMatric(_matric)) {
+						if (Student.getStudentByMatric(_matric) != null) {
 							System.out.println("  Error: Another student with that matric no. already exists. Please try again.");
 						}
 						else matricError = false;
@@ -170,7 +167,7 @@ public class ScrameApp {
 					if (!matricError) {
 						System.out.print("Enter student's year of study: ");
 						int _year = GetTypeFc.getInt(); 				
-						List list = getStudentList();
+						List list = Student.getStudentList();
 						Student s = new Student(_name, _email, _contact, _year, _matric, _gender, _address);								
 						if (list == null) list = new ArrayList();
 						list.add(s);
@@ -190,152 +187,5 @@ public class ScrameApp {
 					System.out.println("  Invalid choice.");
 			}
 		} while (choice != '0' && choice != 'q' && choice != 'Q');
-	}
-	
-	private static void listStudents() {
-		List list;
-		String choice = "f";
-		boolean skip = false;
-		
-		do {
-			System.out.println();
-			System.out.println("Students");
-			System.out.println("-----------------------");
-			
-			list = getStudentList();
-			
-			if (list != null && list.size() > 0) {
-				for (int i = 0 ; i < list.size() ; i++) {
-					Student s = (Student)list.get(i);
-					System.out.println(i+1 + ") " + s.getName() + " (" + s.getMatric() + ")");
-				}
-			}
-			else {
-				System.out.println("There are no students in the system.");
-			}
-			
-			System.out.println();
-			System.out.println("0) Back to student menu");
-			System.out.println("Q) Exit program");
-			System.out.println("-----------------------");
-			
-			System.out.print("Enter choice: ");
-			choice = GetTypeFc.getString();
-			
-			switch (choice) {
-				case "0":
-					System.out.println("  Exiting to previous menu...");
-					break;
-				case "q":
-				case "Q":
-					newMenu.terminateMenu();
-					break;
-				default:
-					int choiceInt = 0;
-					try {
-						choiceInt = Integer.parseInt(choice);
-					}
-					catch (Exception e) {
-						System.out.println("  Invalid choice.");
-						break;
-					}
-					if (list == null || list.size() < choiceInt) {
-						System.out.println("  That student does not exist.");
-					}
-					else {
-						Student s = (Student) list.get(choiceInt-1);
-						showStudent(s);
-					}
-			}
-		} while (!choice.equals("0") && !choice.equals("q") && !choice.equals("Q") && !skip);
-	}
-	
-	private static boolean showStudent(Student s) {
-		String choice = "";
-
-		boolean deleted = false;
-		List list = getStudentList();
-		do {
-			System.out.println();
-			System.out.println("Student");
-			System.out.println("---------------------");
-			System.out.println("Name: " + s.getName());
-			System.out.println("Matric: " + s.getMatric());
-			System.out.println("Year: " + s.getYear());
-			System.out.println();
-			System.out.println("1) Edit name");
-			System.out.println("2) Edit matric no.");
-			System.out.println("3) Edit year of study");
-			System.out.println("D) Delete student");
-			System.out.println();
-			System.out.println("0) Back to student list");
-			System.out.println("Q) Exit program");
-			System.out.println("---------------------");
-			System.out.print("Enter choice: ");
-			String _name ="";
-			choice = GetTypeFc.getString();
-			
-			switch (choice) {
-				case "0":
-					System.out.println("  Exiting to student list...");
-					break;
-					
-				case "1":
-					s.updateName();
-					break;
-					
-				case "2":
-					s.updateMatric();
-					break;
-
-				case "3":
-					s.updateYear();
-					break;
-					
-				case "d":
-				case "D":
-					char confirm = 'n';
-					System.out.println();
-					System.out.println("  Are you sure you want to delete " +  s.getName() + "? This is irreversible.");
-					System.out.print("  Enter \"y\" to confirm: ");
-					confirm = GetTypeFc.getChar();
-					if (confirm == 'y') {					
-						String deletedName = s.getName();
-						String deletedMatric = s.getMatric();
-						deleted = list.remove(s);
-						s.save(list);
-						System.out.println("\n  Deleted " + deletedName + " (" + deletedMatric + ")");
-					}
-					break;
-				case "q":
-				case "Q":
-					newMenu.terminateMenu();
-					break;
-			}
-		}  while (!choice.equals("0") && !choice.equals("q") && !choice.equals("Q") && !choice.equals("d") && !choice.equals("D"));
-		
-		return deleted;
-	}
-
-	private static boolean getStudentByMatric(String _matric) {
-		List list = getStudentList();
-		if (list != null && list.size() > 0) {
-			for (int i = 0 ; i < list.size() ; i++) {
-				Student s = (Student)list.get(i);
-				if (s.getMatric().equals(_matric)) return true;
-			}
-		}
-		return false;
-	}
-
-	private static List getStudentList() {
-		List list = null;
-		try {
-			list = (ArrayList) SerializeDB.readSerializedObject("student.dat");
-		}
-		catch ( Exception e ) {
-		}
-		if (list == null) list = new ArrayList();
-		return list;
 	}
 }

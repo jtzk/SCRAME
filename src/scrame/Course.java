@@ -8,8 +8,9 @@ public class Course implements Serializable {
 	private String code;
 	private int au;
 	private int index;
-	public static Menu newMenu = new Menu();
-	public static GetType get = new GetType();
+	
+	private static Menu newMenu = new Menu();
+	private static GetType get = new GetType();
 
 	public Course(String _title, String _code, int _au)
 	{
@@ -50,7 +51,7 @@ public class Course implements Serializable {
 		return null;
 	}
 	
-	public Course getCourseByCode(String _code) {
+	public static Course getCourseByCode(String _code) {
 		List list = getCourseList();
 		for (int i = 0; i < list.size(); i++) {
 			Course c = (Course) list.get(i);
@@ -74,7 +75,7 @@ public class Course implements Serializable {
 		return list;
 	}
 	
-	public void printCourseList() {
+	public static void printCourseList() {
 		List list;
 		String choice = "f";
 		boolean skip = false;
@@ -145,16 +146,17 @@ public class Course implements Serializable {
 			System.out.println("Title: " + c.getTitle());
 			System.out.println("AU: " + c.getAU());
 			System.out.println();
-			System.out.println("1) Edit course title");
-			System.out.println("2) Edit course code");
+			System.out.println("1) Edit course code");
+			System.out.println("2) Edit course title");
 			System.out.println("3) Edit course AU");
+			System.out.println("4) Show registered students");
 			System.out.println("D) Delete course");
 			System.out.println();
 			System.out.println("0) Back to course list");
 			System.out.println("Q) Exit program");
 			System.out.println("---------------------");
 			System.out.print("Enter choice: ");
-			String _title = "";
+
 			choice = get.getString();
 			
 			switch (choice) {
@@ -163,15 +165,19 @@ public class Course implements Serializable {
 					break;
 					
 				case "1":
-					c.updateTitle();
+					c.updateCode();
 					break;
 					
 				case "2":
-					c.updateCode();
+					c.updateTitle();
 					break;
 
 				case "3":
 					c.updateAU();
+					break;
+					
+				case "4":
+					StudentCourse.printRegisterList(c.code);
 					break;
 					
 				case "d":
@@ -181,7 +187,9 @@ public class Course implements Serializable {
 					System.out.println("  Are you sure you want to delete " +  c.getTitle() + "? This is irreversible.");
 					System.out.print("  Enter \"y\" to confirm: ");
 					confirm = get.getChar();
-					if (confirm == 'y') {					
+					if (confirm == 'y') {
+						// Update registered course list
+						StudentCourse.deleteCourse(c.getCode());
 						String deletedTitle = c.getTitle();
 						String deletedCode = c.getCode();
 						deleted = list.remove(c);
@@ -194,7 +202,7 @@ public class Course implements Serializable {
 					newMenu.terminateMenu();
 					break;
 			}
-		}  while (!choice.equals("0") && !choice.equals("q") && !choice.equals("Q") && !choice.equals("d") && !choice.equals("D"));
+		}  while (!choice.equals("0") && !choice.equals("q") && !choice.equals("Q") && !deleted);
 		
 		return deleted;
 	}
@@ -235,6 +243,8 @@ public class Course implements Serializable {
 				List list = getCourseList();
 				int courseIndex = list.indexOf(this);
 				if (courseIndex != -1) {
+					// Update registered course list
+					StudentCourse.updateCode(code, _code);
 					code = _code;
 					list.set(courseIndex, this);
 					save(list);
