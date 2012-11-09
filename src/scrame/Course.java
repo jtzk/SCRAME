@@ -9,12 +9,14 @@ public class Course implements Serializable {
 	private String title;
 	private String code;
 	private int au;
+	private ArrayList<Class> classes;
 
 	public Course(String _title, String _code, int _au)
 	{
 		title = _title;
 		code = _code;
 		au = _au;
+		classes = new ArrayList<Class>();
 	}
 	
 	public String getTitle()
@@ -30,6 +32,10 @@ public class Course implements Serializable {
 	public int getAU()
 	{
 		return au;
+	}
+	
+	public ArrayList<Class> getClasses() {
+		return classes;
 	}
 	
 	public boolean equals(Object o) {
@@ -91,9 +97,6 @@ public class Course implements Serializable {
 					System.out.println("\nAdding new course");
 					System.out.println("-------------------------");		
 					
-					System.out.print("Enter course title: ");		
-					String _title = GetType.getString();
-					
 					String _code = "";
 					boolean codeError = true;
 					
@@ -108,6 +111,9 @@ public class Course implements Serializable {
 					} while (codeError);
 					
 					if (!codeError) {
+						System.out.print("Enter course title: ");		
+						String _title = GetType.getString();
+						
 						System.out.print("Enter course AU: ");
 						int _au = GetType.getInt(); 				
 						List list = Course.getCourseList();
@@ -201,11 +207,13 @@ public class Course implements Serializable {
 			System.out.println("Code: " + c.getCode());
 			System.out.println("Title: " + c.getTitle());
 			System.out.println("AU: " + c.getAU());
+			System.out.println("Classes: " + c.getClasses().size());
 			System.out.println();
 			System.out.println("1) Edit course code");
 			System.out.println("2) Edit course title");
 			System.out.println("3) Edit course AU");
-			System.out.println("4) Show registered students");
+			System.out.println("4) Manage classes");
+			System.out.println("5) Show registered students");
 			System.out.println("D) Delete course");
 			System.out.println();
 			System.out.println("0) Back to course list");
@@ -233,6 +241,10 @@ public class Course implements Serializable {
 					break;
 					
 				case "4":
+					c.printClasses();
+					break;
+					
+				case "5":
 					StudentCourse.printRegisterList(c.code);
 					break;
 					
@@ -255,14 +267,158 @@ public class Course implements Serializable {
 						System.out.println("\n  Deleted " + deletedTitle + " (" + deletedCode + ")");
 					}
 					break;
+					
 				case "q":
 				case "Q":
 					Menu.terminateMenu();
+					break;
+					
+				default:
+					System.out.println("  Invalid choice.");
 					break;
 			}
 		}  while (!choice.equals("0") && !choice.equals("q") && !choice.equals("Q") && !deleted);
 		
 		return deleted;
+	}
+	
+	// Print classes
+	public void printClasses() {
+		String choice = "";
+		ArrayList<Class> classes = getClasses();
+		
+		do {
+			System.out.println("");
+			System.out.println(getCode() + " Classes");
+			System.out.println("--------------------------");
+			if (classes.size() > 0) {
+				for (int i = 0; i < classes.size(); i++) {
+					Class c = classes.get(i);
+					System.out.println(i + 1 + ") " + c.getName() + " (S:" + c.getSize() + ", V:" + c.getVacancy() + ")");
+				}
+			}
+			else {
+				System.out.println("There are no classes for this course.");
+			}
+			System.out.println("");
+			System.out.println("a) Add a class");
+			System.out.println("");
+			System.out.println("0) Back to course " + getCode());
+			System.out.println("Q) Exit program");
+			System.out.println("--------------------------");
+			System.out.print("Enter choice: ");
+
+			choice = GetType.getString();
+			
+			switch (choice) {
+				case "0":
+					System.out.println("  Exiting to course " + getCode() + "...");
+					break;
+					
+				case "a":
+				case "A":
+					addClass();
+					break;
+					
+				case "q":
+				case "Q":
+					Menu.terminateMenu();
+					break;
+					
+				default:
+					int choiceInt = 0;
+					try {
+						choiceInt = Integer.parseInt(choice);
+					}
+					catch (Exception e) {
+						System.out.println("  Invalid choice.");
+						break;
+					}
+					if (classes.size() < choiceInt) {
+						System.out.println("  That class does not exist.");
+					}
+					else {
+						Class cl = (Class) classes.get(choiceInt-1);
+						String classChoice;
+						boolean deleted = false;
+						do {
+							cl.menuClass();
+							classChoice = GetType.getString();
+							
+							switch (classChoice) {
+								case "0":
+									System.out.println("  Exiting to " + getCode() + " class list...");
+									break;
+									
+								case "1":
+									System.out.print("\nEnter new class name: ");
+									String _name = GetType.getString();
+									
+									if (cl.getName().equals(_name)) System.out.println("\n  No change detected. Original class name preserved.");
+									else if (classExists(_name)) System.out.println("\n  Error: Another class with that name already exists. Please try again.");
+									else {
+										List list = getCourseList();
+										int courseIndex = list.indexOf(this);
+										if (courseIndex != -1) {
+											cl.setName(_name);
+											list.set(courseIndex, this);
+											save(list);
+											System.out.println("\n  Class name changed to: " + cl.getName());
+										}
+									}
+									break;
+									
+								case "2":
+									System.out.print("\nEnter new class size: ");
+									int _size = GetType.getInt();
+									
+									if (cl.getSize() == _size) System.out.println("\n  No change detected. Original class size preserved.");
+									else {
+										List list = getCourseList();
+										int courseIndex = list.indexOf(this);
+										if (courseIndex != -1) {
+											cl.setSize(_size);
+											list.set(courseIndex, this);
+											save(list);
+											System.out.println("\n  Class size changed to: " + cl.getSize());
+										}
+									}
+									break;
+									
+								case "d":
+								case "D":
+									char confirm = 'n';
+									System.out.println();
+									System.out.println("  Are you sure you want to delete " +  cl.getName() + "? This is irreversible.");
+									System.out.print("  Enter \"y\" to confirm: ");
+									confirm = GetType.getChar();
+									if (confirm == 'y') {
+										String deletedName = cl.getName();
+										
+										List list = getCourseList();
+										int courseIndex = list.indexOf(this);
+										if (courseIndex != -1) {
+											deleted = getClasses().remove(cl);
+											list.set(courseIndex, this);
+											save(list);
+											System.out.println("\n  Deleted " + deletedName);
+										}
+									}
+									break;
+									
+								case "q":
+								case "Q":
+									Menu.terminateMenu();
+									break;
+									
+								default:
+									System.out.println("  Invalid choice.");	
+							}
+						} while (!classChoice.equals("q") && !classChoice.equals("Q") && !classChoice.equals("0") && !deleted);
+					}
+					break;
+			}
+		} while (!choice.equals("0") && !choice.equals("q") && !choice.equals("Q"));
 	}
 	
 	// Public setters
@@ -326,12 +482,76 @@ public class Course implements Serializable {
 			int courseIndex = list.indexOf(this);
 			if (courseIndex != -1) {
 				au = _au;
-				list.set(list.indexOf(this), this);
+				list.set(courseIndex, this);
 				save(list);
 				System.out.println("\n  Changed AU of course to: " + _au);
 			}
 		}
 		else System.out.println("\n  Invalid course AU.");
+	}
+	
+	// Get class
+	public boolean classExists(String _name) {
+		for (int i = 0; i < classes.size(); i++) {
+			Class cl = classes.get(i);
+			if (cl.getName().equals(_name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	// Add class
+	public void addClass() {
+		String _name = "";
+		int _size = 0;
+		
+		System.out.println("");
+		System.out.println(getCode() + ": Adding class");
+		System.out.println("--------------------------");
+		
+		boolean classError;
+		do {
+			classError = false;
+			System.out.print("Enter class name: ");
+			_name = GetType.getString();
+			
+			if (_name.length() == 0) {
+				classError = true;
+				System.out.println("\n  Error: Class name is required. Please try again.\n");
+			}
+			else {
+				for (int i = 0; i < classes.size(); i++) {
+					Class cl = classes.get(i);
+					if (cl.getName().equals(_name)) {
+						classError = true;
+						System.out.println("\n  Error: Another class with that name already exists. Please try again.\n");
+						break;
+					}
+				}
+			}
+		} while (classError);
+		
+		if (!classError) {
+			System.out.print("Enter class size: ");
+			_size = GetType.getInt();
+			
+			List list = getCourseList();
+			int courseIndex = list.indexOf(this);
+			if (courseIndex != -1) {
+				Class cl = new Class(_name, getCode(), _size);
+				classes.add(cl);
+				list.set(courseIndex, this);
+				save(list);
+				System.out.println("\nClass " + cl.getName() + " added.");
+			}
+			else System.out.println("\n  Error: Could not add class to course.");
+		}
+	}
+	
+	// Remove class
+	public void removeClass(Class _class) {
+		classes.remove(_class);
 	}
 	
 	// Set course title
