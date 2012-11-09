@@ -93,17 +93,17 @@ public class Student extends Person  {
 		String _name = get.getString();
 
 		if (_name.length() > 0) {
-			if (_name.equals(super.getName())) {
+			if (_name.equals(getName())) {
 				System.out.println("\n  No change detected. Original name preserved.");
 			}
 			else {
 				List list = getStudentList();
 				int studentIndex = list.indexOf(this);
 				if (studentIndex != -1) {
-					super.setName(_name);
+					setName(_name);
 					list.set(studentIndex, this);
 					save(list);
-					System.out.println("\n  Changed name of student to: " + super.getName());
+					System.out.println("\n  Changed name of student to: " + getName());
 				}
 			}
 		}

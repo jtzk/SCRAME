@@ -9,7 +9,7 @@ public class Course implements Serializable {
 	private int au;
 	private int index;
 	public static Menu newMenu = new Menu();
-	public static GetType GetTypeFc = new GetType();
+	public static GetType get = new GetType();
 
 	public Course(String _title, String _code, int _au)
 	{
@@ -89,7 +89,7 @@ public class Course implements Serializable {
 			if (list != null && list.size() > 0) {
 				for (int i = 0 ; i < list.size() ; i++) {
 					Course c = (Course) list.get(i);
-					System.out.println(i+1 + ") " + c.title + " (" + c.code + ")");
+					System.out.println(i+1 + ") " + c.code + " " + c.title);
 				}
 			}
 			else {
@@ -102,7 +102,7 @@ public class Course implements Serializable {
 			System.out.println("-----------------------");
 			
 			System.out.print("Enter choice: ");
-			choice = GetTypeFc.getString();
+			choice = get.getString();
 			
 			switch (choice) {
 				case "0":
@@ -141,8 +141,8 @@ public class Course implements Serializable {
 			System.out.println();
 			System.out.println("Course");
 			System.out.println("---------------------");
-			System.out.println("Title: " + c.getTitle());
 			System.out.println("Code: " + c.getCode());
+			System.out.println("Title: " + c.getTitle());
 			System.out.println("AU: " + c.getAU());
 			System.out.println();
 			System.out.println("1) Edit course title");
@@ -155,7 +155,7 @@ public class Course implements Serializable {
 			System.out.println("---------------------");
 			System.out.print("Enter choice: ");
 			String _title = "";
-			choice = GetTypeFc.getString();
+			choice = get.getString();
 			
 			switch (choice) {
 				case "0":
@@ -180,7 +180,7 @@ public class Course implements Serializable {
 					System.out.println();
 					System.out.println("  Are you sure you want to delete " +  c.getTitle() + "? This is irreversible.");
 					System.out.print("  Enter \"y\" to confirm: ");
-					confirm = GetTypeFc.getChar();
+					confirm = get.getChar();
 					if (confirm == 'y') {					
 						String deletedTitle = c.getTitle();
 						String deletedCode = c.getCode();
@@ -200,6 +200,72 @@ public class Course implements Serializable {
 	}
 	
 	// Public setters
+	// Update course title
+	public void updateTitle() {
+		System.out.print("\nEnter new title: ");
+		String _title = get.getString();
+
+		if (_title.length() > 0) {
+			if (_title.equals(getTitle())) {
+				System.out.println("\n  No change detected. Original title preserved.");
+			}
+			else {
+				List list = getCourseList();
+				int courseIndex = list.indexOf(this);
+				if (courseIndex != -1) {
+					setTitle(_title);
+					list.set(courseIndex, this);
+					save(list);
+					System.out.println("\n  Changed title of course to: " + getTitle());
+				}
+			}
+		}
+		else System.out.println("\n  Invalid title.");
+	}
+	// Update course code
+	public void updateCode() {
+		System.out.print("\nEnter new course code: ");
+		String _code = get.getString();
+
+		if (_code.length() > 0) {
+			if (_code.equals(code)) {
+				System.out.println("\n  No change detected. Original course code preserved.");
+			}
+			else if (getCourseByCode(_code) == null) {
+				List list = getCourseList();
+				int courseIndex = list.indexOf(this);
+				if (courseIndex != -1) {
+					code = _code;
+					list.set(courseIndex, this);
+					save(list);
+					System.out.println("\n  Changed code of course to: " + _code);
+				}
+			}
+			else System.out.println("\n  Error: Another course with that code already exists.");
+		}
+		else System.out.println("\n  Invalid course code.");
+	}
+	// Update course AU
+	public void updateAU() {
+		System.out.print("\nEnter new course AU: ");
+		int _au = get.getInt();
+
+		if (_au == au) {
+			System.out.println("\n  No change detected. Original year of study preserved.");
+		}
+		else if (_au > 0) {
+			List list = getCourseList();
+			int courseIndex = list.indexOf(this);
+			if (courseIndex != -1) {
+				au = _au;
+				list.set(list.indexOf(this), this);
+				save(list);
+				System.out.println("\n  Changed AU of course to: " + _au);
+			}
+		}
+		else System.out.println("\n  Invalid course AU.");
+	}
+	
 	// Set course title
 	public void setTitle(String _title)
 	{
