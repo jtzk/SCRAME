@@ -475,7 +475,7 @@ public class Course implements Serializable {
 		int _au = GetType.getInt();
 
 		if (_au == au) {
-			System.out.println("\n  No change detected. Original year of study preserved.");
+			System.out.println("\n  No change detected. Original course au preserved.");
 		}
 		else if (_au > 0) {
 			List list = getCourseList();
