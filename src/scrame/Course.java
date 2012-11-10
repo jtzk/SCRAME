@@ -1,6 +1,6 @@
 package scrame;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.*;
 
 public class Course implements Serializable {
