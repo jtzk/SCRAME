@@ -51,4 +51,22 @@ public class Class implements Serializable{
 		}
 		return false;
 	}
+		public static List getClassList() {
+		return getClassList("class.dat");
+	}
+	
+	public void save(List list) {
+		SerializeDB.writeSerializedObject("class.dat", list);
+	}
+	
+	public static List getClassList(String file) {
+		List list = null;
+		try {
+			list = (ArrayList) SerializeDB.readSerializedObject(file);
+		}
+		catch ( Exception e ) {
+		}
+		if (list == null) list = new ArrayList();
+		return list;
+	}
 }
