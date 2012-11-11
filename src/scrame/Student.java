@@ -148,7 +148,7 @@ public class Student extends Person implements Comparable<Student> {
 	// Update student matric no
 	public void updateMatric() {
 		System.out.print("\nEnter new matric no.: ");
-		String _matric = GetType.getString();
+		String _matric = GetType.getString().toUpperCase();
 
 		if (_matric.length() > 0) {
 			if (_matric.equals(matric)) {
@@ -239,7 +239,7 @@ public class Student extends Person implements Comparable<Student> {
 					
 					do {
 						System.out.print("Enter student's matriculation no.: ");
-						_matric = GetType.getString();
+						_matric = GetType.getString().toUpperCase();
 						if (_matric.equals("q") || _matric.equals("Q")) break;
 						if (_matric.length() == 0) System.out.println("\n  Error: Matric no. is required. 'Q' to exit adding student.\n");
 						else if (Student.getStudentByMatric(_matric) != null) {
@@ -260,6 +260,13 @@ public class Student extends Person implements Comparable<Student> {
 					}
 					
 					break;
+					
+				case '3':
+					System.out.print("Enter the student's name: ");
+					String name=GetType.getString();
+					SearchStudent(name);
+					break;
+					
 				case '0':
 					System.out.println("  Exiting to previous menu...");
 					break;
@@ -280,7 +287,7 @@ public class Student extends Person implements Comparable<Student> {
 		
 		do {
 			System.out.println();
-			System.out.println("Students");
+			System.out.println("Students list");
 			System.out.println("-----------------------");
 			
 			list = getStudentList();
@@ -337,7 +344,7 @@ public class Student extends Person implements Comparable<Student> {
 		
 		do {
 			System.out.println();
-			System.out.println("Student");
+			System.out.println("Student profile");
 			System.out.println("---------------------");
 			System.out.println("Name: " + s.getName());
 			System.out.println("Matric: " + s.getMatric());
@@ -370,7 +377,7 @@ public class Student extends Person implements Comparable<Student> {
 				case "2":
 					
 					List courseList = Course.getCourseList();
-					
+					Collections.sort(courseList);
 					if (courseList != null && courseList.size() > 0) {
 						System.out.println("\nSelect a course from the list");
 						System.out.println("-----------------------");
@@ -526,5 +533,28 @@ public class Student extends Person implements Comparable<Student> {
 	public int compareTo(Student s) {
 	        int lastCmp = super.getName().compareTo(s.getName());
 	        return (lastCmp != 0 ? lastCmp : super.getName().compareTo(s.getName()));
+	}
+	
+	public static void SearchStudent(String name)
+	{
+		List list=getStudentList();
+		String storeName = null,storeMatric = null;
+		Boolean found=false;
+		if (list != null && list.size() > 0) {
+			for (int i = 0 ; i < list.size() ; i++) {
+				Student s = (Student)list.get(i);
+				if (s.getName().compareTo(name)==0) {
+					storeName=s.getName();
+					storeMatric=s.getMatric();
+					found=true;
+					break;
+				}
+			}
+		}
+
+		if(found== true)
+			System.out.println(storeName + " (" + storeMatric + ")");
+		else
+			System.out.println("There is no such student.");
 	}
 }

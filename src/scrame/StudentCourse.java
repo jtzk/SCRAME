@@ -111,7 +111,7 @@ public class StudentCourse implements Serializable {
 				StudentCourse r = (StudentCourse) list.get(i);
 				if (r.course.equals(_course)) {
 					Student s = Student.getStudentByMatric(r.student);
-					System.out.println(s.getName() + " (" + s.getMatric() + ")");
+					System.out.println(i+1+")"+s.getName() + " (" + s.getMatric() + ")");
 				}
 			}
 			System.out.println("------------------");

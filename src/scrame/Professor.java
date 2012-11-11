@@ -10,19 +10,37 @@ public class Professor extends Person implements Comparable<Professor>{
 	}
 
 	public static void menuProfessors() {
-		try	{
-			List list = Professor.getProfessorList();
-			Collections.sort(list);
-			System.out.println("Professors List");
-			System.out.println("-----------------------");
-			for (int i = 0 ; i < list.size() ; i++) {
-				Professor p = (Professor)list.get(i);
-				System.out.println(i+1 + ") " + p.getName() + " (" + p.getEmail() + ")");
+		char choice = '1';
+		
+		do {
+			String MenuTitle="Professor";
+			Menu.showMenu2(MenuTitle);
+			
+			System.out.print("Enter choice: ");
+			choice = GetType.getChar();
+			
+			switch (choice) {
+				case '1':
+					Professor.printProfessorList();
+					break;
+
+				case '2':
+					System.out.print("Enter the professor's name: ");
+					String name=GetType.getString();
+					SearchProfessor(name);
+					
+				case '0':
+					System.out.println("  Exiting to previous menu...");
+					break;
+				case 'q':
+				case 'Q':
+					Menu.terminateMenu();
+					break;
+				default:
+					System.out.println("  Invalid choice.");
 			}
-		}
-		catch ( Exception e ) {
-			System.out.println( "Exception >> " + e.getMessage() );
-		}
+		} while (choice != '0' && choice != 'q' && choice != 'Q');
+		
 	}
 	
 	public boolean equals(Object o) {
@@ -54,5 +72,65 @@ public class Professor extends Person implements Comparable<Professor>{
 	public int compareTo(Professor p) {
         int lastCmp = super.getName().compareTo(p.getName());
         return (lastCmp != 0 ? lastCmp : super.getName().compareTo(p.getName()));
+	}
+	
+	public static void printProfessorList() {
+		List list;
+		String choice = "f";
+		boolean skip = false;
+		 
+		do {
+			System.out.println();
+			System.out.println("Professor list");
+			System.out.println("-----------------------");
+			
+			list = getProfessorList();
+
+			Collections.sort(list);
+			for (int i = 0 ; i < list.size() ; i++) {
+				Professor p = (Professor)list.get(i);
+				System.out.println(i+1 + ") " + p.getName() + " (" + p.getEmail() + ")");
+			}
+			
+			System.out.println();
+			System.out.println("0) Back to professor menu");
+			System.out.println("Q) Exit program");
+			System.out.println("-----------------------");
+			
+			System.out.print("Enter choice: ");
+			choice = GetType.getString();
+			
+			switch (choice) {
+				case "0":
+					System.out.println("  Exiting to previous menu...");
+					break;
+				case "q":
+				case "Q":
+					Menu.terminateMenu();
+					break;
+			}
+		} while (!choice.equals("0") && !choice.equals("q") && !choice.equals("Q") && !skip);
+	}
+	public static void SearchProfessor(String name)
+	{
+		List list=getProfessorList();
+		String storeName = null,storeEmail = null;
+		Boolean found=false;
+		if (list != null && list.size() > 0) {
+			for (int i = 0 ; i < list.size() ; i++) {
+				Professor p = (Professor)list.get(i);
+				if (p.getName().compareTo(name)==0) {
+					storeName=p.getName();
+					storeEmail=p.getEmail();
+					found=true;
+					break;
+				}
+			}
+		}
+
+		if(found== true)
+			System.out.println(storeName + " (" + storeEmail + ")");
+		else
+			System.out.println("There is no such professor.");
 	}
 }
