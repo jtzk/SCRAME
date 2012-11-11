@@ -1,39 +1,24 @@
 package scrame;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-public class Professor extends Person {
+public class Professor extends Person implements Comparable<Professor>{
+	private static final long serialVersionUID = 1L;
+
 	public Professor(String _name, String _email , int _contact) {
 		super(_name, _email, _contact);
 	}
 
 	public static void menuProfessors() {
-		List list;
 		try	{
-			// read from serialized file the list of professors
-			list = (ArrayList<?>)SerializeDB.readSerializedObject("professor.dat");
-			
-			 System.out.println("Professors Menu");
-			 System.out.println("-----------------------");
-			 Professor p = new Professor("Joseph Lay", "jos@ntu.edu.sg", 67909999);
-			 
-			 list.add(p);
-			 list.remove(p);  // remove if p equals object in the list
-			for (int i = 0 ; i < list.size() ; i++) {
-				Professor p1 = (Professor)list.get(i);
-				System.out.println(i+1 + ") " + p1.getName() + " (" + p1.getContact() + ")");
-			}
-			System.out.println("");
-			System.out.println("0) Back to main menu");
-			System.out.println("Q) Exit program");
+			List list = Professor.getProfessorList();
+			Collections.sort(list);
+			System.out.println("Professors List");
 			System.out.println("-----------------------");
-			System.out.print("Select a professor: ");
-			// write to serialized file - update/insert/delete
-			// example - add one more professor
-
-
-			// SerializeDB.writeSerializedObject("professor.dat", list);
+			for (int i = 0 ; i < list.size() ; i++) {
+				Professor p = (Professor)list.get(i);
+				System.out.println(i+1 + ") " + p.getName() + " (" + p.getEmail() + ")");
+			}
 		}
 		catch ( Exception e ) {
 			System.out.println( "Exception >> " + e.getMessage() );
@@ -46,5 +31,28 @@ public class Professor extends Person {
 			return (getName().equals(p.getName()));
 		}
 		return false;
+	}
+	public void save(List list) {
+		SerializeDB.writeSerializedObject("professsor.dat", list);
+	}
+	
+	public static List getProfessorList() {
+		return getProfessorList("professor.dat");
+	}
+	
+	public static List getProfessorList(String file) {
+		List list = null;
+		try {
+			list = (ArrayList) SerializeDB.readSerializedObject(file);
+		}
+		catch ( Exception e ) {
+		}
+		if (list == null) list = new ArrayList();
+		return list;
+	}
+	
+	public int compareTo(Professor p) {
+        int lastCmp = super.getName().compareTo(p.getName());
+        return (lastCmp != 0 ? lastCmp : super.getName().compareTo(p.getName()));
 	}
 }
