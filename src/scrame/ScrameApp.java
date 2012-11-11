@@ -3,6 +3,7 @@ import java.util.*;
 public class ScrameApp {
 	public static void main(String[] args) {
 		boolean success = false;
+		boolean loaded=false;
 		RawCase rc= new RawCase();
 		char choice = '1';
 		do {
@@ -22,12 +23,17 @@ public class ScrameApp {
 					break;
 					
 				case '4':
-					rc.rawProfessor();
-					rc.rawStudent();
-					rc.rawCourse();
-					rc.rawClass();
-					rc.rawStudentCourse();
-					System.out.println("Loading rawcases.");
+					if(loaded==false){
+						rc.rawProfessor();
+						rc.rawStudent();
+						rc.rawCourse();
+						rc.rawClass();
+						rc.rawStudentCourse();
+						loaded=true;
+						System.out.println("Loading rawcases.");
+					}
+					else
+						System.out.println("Rawcases has been loaded.");
 					break;
 					
 				case 'q':
