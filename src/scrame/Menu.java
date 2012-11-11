@@ -8,6 +8,7 @@ public class Menu {
 		System.out.println("1) Professors");
 		System.out.println("2) Students");
 		System.out.println("3) Courses");
+		System.out.println("4) Rawcase");
 		System.out.println("--------------------------------------------");
 		System.out.print("Enter choice: ");
 	}
