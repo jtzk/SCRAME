@@ -125,6 +125,13 @@ public class Course implements Serializable, Comparable<Course> {
 					}
 					
 					break;
+					
+				case '3':
+					System.out.print("Enter the course code: ");
+					String code=GetType.getString();
+					SearchCourse(code);
+					break;
+					
 				case '0':
 					System.out.println("  Exiting to previous menu...");
 					break;
@@ -578,5 +585,28 @@ public class Course implements Serializable, Comparable<Course> {
 	public int compareTo(Course cs) {
         	int lastCmp = getCode().compareTo(cs.getCode());
        		return (lastCmp != 0 ? lastCmp : getCode().compareTo(cs.getCode()));
+	}
+	
+	public static void SearchCourse(String code)
+	{
+		List list=getCourseList();
+		String storeCourseTitle = null,storeCourseCode = null;
+		Boolean found=false;
+		if (list != null && list.size() > 0) {
+			for (int i = 0 ; i < list.size() ; i++) {
+				Course c = (Course)list.get(i);
+				if (c.getCode().compareTo(code)==0) {
+					storeCourseTitle=c.getTitle();
+					storeCourseCode=c.getCode();
+					found=true;
+					break;
+				}
+			}
+		}
+
+		if(found== true)
+			System.out.println(storeCourseTitle + " (" + storeCourseCode + ")");
+		else
+			System.out.println("There is no such course.");
 	}
 }
