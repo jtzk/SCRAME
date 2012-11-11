@@ -1,6 +1,7 @@
 package scrame;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 public class Class implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -51,7 +52,7 @@ public class Class implements Serializable{
 		}
 		return false;
 	}
-		public static List getClassList() {
+	public static List getClassList() {
 		return getClassList("class.dat");
 	}
 	
