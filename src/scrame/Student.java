@@ -274,7 +274,7 @@ public class Student extends Person implements Comparable<Student> {
 	}
 	
 	public static void printStudentList() {
-		List list=null;
+		List list;
 		String choice = "f";
 		boolean skip = false;
 		
