@@ -337,7 +337,7 @@ public class Student extends Person implements Comparable<Student> {
 		
 		do {
 			System.out.println();
-			System.out.println("Student");
+			System.out.println("Student profile");
 			System.out.println("---------------------");
 			System.out.println("Name: " + s.getName());
 			System.out.println("Matric: " + s.getMatric());
