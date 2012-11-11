@@ -148,7 +148,7 @@ public class Student extends Person implements Comparable<Student> {
 	// Update student matric no
 	public void updateMatric() {
 		System.out.print("\nEnter new matric no.: ");
-		String _matric = GetType.getString();
+		String _matric = GetType.getString().toUpperCase();
 
 		if (_matric.length() > 0) {
 			if (_matric.equals(matric)) {
@@ -239,7 +239,7 @@ public class Student extends Person implements Comparable<Student> {
 					
 					do {
 						System.out.print("Enter student's matriculation no.: ");
-						_matric = GetType.getString();
+						_matric = GetType.getString().toUpperCase();
 						if (_matric.equals("q") || _matric.equals("Q")) break;
 						if (_matric.length() == 0) System.out.println("\n  Error: Matric no. is required. 'Q' to exit adding student.\n");
 						else if (Student.getStudentByMatric(_matric) != null) {
