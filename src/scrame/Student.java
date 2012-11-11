@@ -260,6 +260,13 @@ public class Student extends Person implements Comparable<Student> {
 					}
 					
 					break;
+					
+				case '3':
+					System.out.print("Enter the student's name: ");
+					String name=GetType.getString();
+					SearchStudent(name);
+					break;
+					
 				case '0':
 					System.out.println("  Exiting to previous menu...");
 					break;
@@ -526,5 +533,28 @@ public class Student extends Person implements Comparable<Student> {
 	public int compareTo(Student s) {
 	        int lastCmp = super.getName().compareTo(s.getName());
 	        return (lastCmp != 0 ? lastCmp : super.getName().compareTo(s.getName()));
+	}
+	
+	public static void SearchStudent(String name)
+	{
+		List list=getStudentList();
+		String storeName = null,storeMatric = null;
+		Boolean found=false;
+		if (list != null && list.size() > 0) {
+			for (int i = 0 ; i < list.size() ; i++) {
+				Student s = (Student)list.get(i);
+				if (s.getName().compareTo(name)==0) {
+					storeName=s.getName();
+					storeMatric=s.getMatric();
+					found=true;
+					break;
+				}
+			}
+		}
+
+		if(found== true)
+			System.out.println(storeName + " (" + storeMatric + ")");
+		else
+			System.out.println("There is no such student.");
 	}
 }
