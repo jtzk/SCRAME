@@ -370,7 +370,7 @@ public class Student extends Person implements Comparable<Student> {
 				case "2":
 					
 					List courseList = Course.getCourseList();
-					
+					Collections.sort(courseList);
 					if (courseList != null && courseList.size() > 0) {
 						System.out.println("\nSelect a course from the list");
 						System.out.println("-----------------------");
