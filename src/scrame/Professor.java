@@ -1,9 +1,8 @@
 package scrame;
 
-
 import java.util.*;
 
-public class Professor extends Person {
+public class Professor extends Person implements Comparable<Professor>{
 	private static final long serialVersionUID = 1L;
 
 	public Professor(String _name, String _email , int _contact) {
@@ -13,6 +12,7 @@ public class Professor extends Person {
 	public static void menuProfessors() {
 		try	{
 			List list = Professor.getProfessorList();
+			Collections.sort(list);
 			System.out.println("Professors List");
 			System.out.println("-----------------------");
 			for (int i = 0 ; i < list.size() ; i++) {
@@ -49,5 +49,10 @@ public class Professor extends Person {
 		}
 		if (list == null) list = new ArrayList();
 		return list;
+	}
+	
+	public int compareTo(Professor p) {
+        int lastCmp = super.getName().compareTo(p.getName());
+        return (lastCmp != 0 ? lastCmp : super.getName().compareTo(p.getName()));
 	}
 }

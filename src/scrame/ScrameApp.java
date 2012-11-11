@@ -3,6 +3,7 @@ import java.util.*;
 public class ScrameApp {
 	public static void main(String[] args) {
 		boolean success = false;
+		RawCase rc= new RawCase();
 		char choice = '1';
 		do {
 			Menu.showMenu();			
@@ -18,6 +19,15 @@ public class ScrameApp {
 					
 				case '3':
 					Course.menuCourse();
+					break;
+					
+				case '4':
+					rc.rawProfessor();
+					rc.rawStudent();
+					rc.rawCourse();
+					rc.rawClass();
+					rc.rawStudentCourse();
+					System.out.println("Loading rawcases.");
 					break;
 					
 				case 'q':

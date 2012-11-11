@@ -3,7 +3,7 @@ package scrame;
 import java.io.*;
 import java.util.*;
 
-public class Course implements Serializable {
+public class Course implements Serializable, Comparable<Course> {
 	private static final long serialVersionUID = 1L;
 	
 	private String title;
@@ -149,7 +149,7 @@ public class Course implements Serializable {
 			System.out.println("-----------------------");
 			
 			list = getCourseList();
-			
+			Collections.sort(list);
 			if (list != null && list.size() > 0) {
 				for (int i = 0 ; i < list.size() ; i++) {
 					Course c = (Course) list.get(i);
@@ -573,5 +573,10 @@ public class Course implements Serializable {
 	
 	public void save(List list) {
 		SerializeDB.writeSerializedObject("course.dat", list);
+	}
+	
+	public int compareTo(Course cs) {
+        	int lastCmp = getCode().compareTo(cs.getCode());
+       		return (lastCmp != 0 ? lastCmp : getCode().compareTo(cs.getCode()));
 	}
 }

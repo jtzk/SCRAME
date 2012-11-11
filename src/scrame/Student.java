@@ -1,7 +1,7 @@
 package scrame;
 import java.util.*;
 
-public class Student extends Person  {
+public class Student extends Person implements Comparable<Student> {
 	private static final long serialVersionUID = 1L;
 	
 	private int year;
@@ -284,7 +284,7 @@ public class Student extends Person  {
 			System.out.println("-----------------------");
 			
 			list = getStudentList();
-			
+			Collections.sort(list);
 			if (list != null && list.size() > 0) {
 				for (int i = 0 ; i < list.size() ; i++) {
 					Student s = (Student)list.get(i);
@@ -522,5 +522,9 @@ public class Student extends Person  {
 	
 	public void save(List list) {
 		SerializeDB.writeSerializedObject("student.dat", list);
+	}
+	public int compareTo(Student s) {
+	        int lastCmp = super.getName().compareTo(s.getName());
+	        return (lastCmp != 0 ? lastCmp : super.getName().compareTo(s.getName()));
 	}
 }
