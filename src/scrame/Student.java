@@ -280,7 +280,7 @@ public class Student extends Person implements Comparable<Student> {
 		
 		do {
 			System.out.println();
-			System.out.println("Students");
+			System.out.println("Students list");
 			System.out.println("-----------------------");
 			
 			list = getStudentList();
