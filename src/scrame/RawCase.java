@@ -1,5 +1,6 @@
 package scrame;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -7,7 +8,7 @@ public class RawCase  {
 
 	public void rawStudent() {
 		
-		List list= Student.getStudentList();
+		List list= new ArrayList();
 		Student[] s = new Student[40];
 		s[0]=new Student("Xiao Ling","xling12@e.ntu.edu.sg",98822331,3,"U1234567A",'F',"BLK 1 #02-11 WOODLANDS CRESENT(111222)");
 		s[1]= new Student("Mei Xin","mxin22@e.ntu.edu.sg",93425432,4,"U1121137B",'F',"BLK 2 #03-11 WOODLANDS CRESENT(111222)");
@@ -54,7 +55,7 @@ public class RawCase  {
 	}
 	
 	public void rawProfessor() {
-		List list= Professor.getProfessorList();
+		List list= new ArrayList();
 		Professor[] p = new Professor[40];
 		p[0] = new Professor("Joseph Lay", "jos@ntu.edu.sg", 67909999);	
 		p[1] = new Professor("Mary yeo", "myeo@ntu.edu.sg", 67901111);	
@@ -70,22 +71,32 @@ public class RawCase  {
 	}
 	
 	public void rawCourse() {
-		List list= Course.getCourseList();
+		List list = new ArrayList();
 		Course[] c = new Course[40];
-		 c[0] = new Course("Object Oriented Programming", "CZ2002", 3);	
+		 c[0] = new Course("Object Oriented Programming", "CZ2002", 3);
 		 c[1] = new Course("Software Engineering", "CZ2006", 3);	
 		 c[2] = new Course("Human Resource Management", "CZ8003", 4);		
 		 c[3] = new Course("Green Computing", "CZ1002", 2);	
 		 c[4] = new Course("Engineering Math", "CZ1008", 3);	
-		 c[5] = new Course("Engineer and Society", "CZ0001", 4);	
-		 for (int i =0; i <6;i++)
+		 c[5] = new Course("Engineer and Society", "CZ0001", 4);
+		 
+		 for (int i = 0; i < 6; i++) {
+			c[i].newClass("SSP1", c[i].getCode(), 30);
+			c[i].newClass("SSP2", c[i].getCode(), 30);
+			c[i].newClass("SSP3", c[i].getCode(), 30);
+			c[i].newClass("SSP4", c[i].getCode(), 30);
+			c[i].newClass("SSP5", c[i].getCode(), 30);
+			c[i].newClass("SSP6", c[i].getCode(), 30);
+			System.out.println("Added courses to " + c[i].getCode());
 			list.add(c[i]);
-
-		SerializeDB.writeSerializedObject("course.dat", list);
+		 }
+		 
+		 SerializeDB.writeSerializedObject("course.dat", list);
 	}
-		public void rawStudentCourse()
+	
+	public void rawStudentCourse()
 	{
-		List<StudentCourse> list= StudentCourse.getRegisterList();
+		List<StudentCourse> list= new ArrayList();
 		StudentCourse[] sc = new StudentCourse[500];
 		 sc[0] = new StudentCourse("U1234567A", "CZ0001");
 		 sc[1] = new StudentCourse("U1234564Z", "CZ0001");

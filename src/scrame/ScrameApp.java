@@ -27,7 +27,7 @@ public class ScrameApp {
 						rc.rawProfessor();
 						rc.rawStudent();
 						rc.rawCourse();
-						rc.rawClass();
+						//rc.rawClass();
 						rc.rawStudentCourse();
 						loaded=true;
 						System.out.println("Loading rawcases.");

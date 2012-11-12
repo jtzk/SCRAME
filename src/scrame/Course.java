@@ -34,7 +34,7 @@ public class Course implements Serializable, Comparable<Course> {
 		return au;
 	}
 	
-	public ArrayList<Class> getClasses() {
+	public ArrayList<Class> getClassList() {
 		return classes;
 	}
 	
@@ -219,7 +219,7 @@ public class Course implements Serializable, Comparable<Course> {
 			System.out.println("Code: " + c.getCode());
 			System.out.println("Title: " + c.getTitle());
 			System.out.println("AU: " + c.getAU());
-			System.out.println("Classes: " + c.getClasses().size());
+			System.out.println("Classes: " + c.getClassList().size());
 			System.out.println();
 			System.out.println("1) Edit course code");
 			System.out.println("2) Edit course title");
@@ -297,7 +297,7 @@ public class Course implements Serializable, Comparable<Course> {
 	// Print classes
 	public void printClasses() {
 		String choice = "";
-		ArrayList<Class> classes = getClasses();
+		ArrayList<Class> classes = getClassList();
 		
 		do {
 			System.out.println("");
@@ -410,7 +410,7 @@ public class Course implements Serializable, Comparable<Course> {
 										List list = getCourseList();
 										int courseIndex = list.indexOf(this);
 										if (courseIndex != -1) {
-											deleted = getClasses().remove(cl);
+											deleted = getClassList().remove(cl);
 											list.set(courseIndex, this);
 											save(list);
 											System.out.println("\n  Deleted " + deletedName);
@@ -533,13 +533,9 @@ public class Course implements Serializable, Comparable<Course> {
 				System.out.println("\n  Error: Class name is required. Please try again.\n");
 			}
 			else {
-				for (int i = 0; i < classes.size(); i++) {
-					Class cl = classes.get(i);
-					if (cl.getName().equals(_name)) {
-						classError = true;
-						System.out.println("\n  Error: Another class with that name already exists. Please try again.\n");
-						break;
-					}
+				if (classExists(_name)) {
+					classError = true;
+					System.out.println("\n  Error: Another class with that name already exists. Please try again.\n");
 				}
 			}
 		} while (classError);
@@ -551,13 +547,25 @@ public class Course implements Serializable, Comparable<Course> {
 			List list = getCourseList();
 			int courseIndex = list.indexOf(this);
 			if (courseIndex != -1) {
-				Class cl = new Class(_name, getCode(), _size);
-				classes.add(cl);
-				list.set(courseIndex, this);
-				save(list);
-				System.out.println("\nClass " + cl.getName() + " added.");
+				Class cl = newClass(_name, getCode(), _size);
+				if (cl != null) {
+					System.out.println("\nClass " + cl.getName() + " added.");
+					list.set(courseIndex, this);
+					save(list);
+				}
 			}
 			else System.out.println("\n  Error: Could not add class to course.");
+		}
+	}
+	
+	public Class newClass(String _name, String _code, int _size) {
+		try {
+			Class cl = new Class(_name, _code, _size);
+			classes.add(cl);
+			return cl;
+		}
+		catch (Exception e) {
+			return null;
 		}
 	}
 	

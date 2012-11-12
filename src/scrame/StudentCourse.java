@@ -18,6 +18,33 @@ public class StudentCourse implements Serializable {
 		course = _course;
 	}
 	
+	// Get student registered courses {
+	public static List<Course> getStudentCourses(String _matric) {
+		List<StudentCourse> list = getRegisterList();
+		List<Course> courseList = new ArrayList<Course>();
+		
+		for (int i = 0; i < list.size(); i++) {
+			StudentCourse r = (StudentCourse) list.get(i);
+			if (r.student.equals(_matric))
+				courseList.add(Course.getCourseByCode(r.course));
+		}
+		
+		return courseList;
+	}
+	
+	// Check if student is registered
+	public static boolean isEnrolled(String _matric, String _course) {
+		if (_matric.length() > 0) {
+			List list = getRegisterList();
+			for (int i = 0; i < list.size(); i++) {
+				StudentCourse r = (StudentCourse) list.get(i);
+				if (r.student.equals(_matric) && r.course.equals(_course))
+					return true;
+			}
+		}
+		return false;
+	}
+	
 	// Register student for a course
 	public static boolean register(String _student, String _course) {
 	    if (_student.length() > 0) {
@@ -111,7 +138,7 @@ public class StudentCourse implements Serializable {
 				StudentCourse r = (StudentCourse) list.get(i);
 				if (r.course.equals(_course)) {
 					Student s = Student.getStudentByMatric(r.student);
-					System.out.println(i+1+")"+s.getName() + " (" + s.getMatric() + ")");
+					System.out.println(s.getName() + " (" + s.getMatric() + ")");
 				}
 			}
 			System.out.println("------------------");

@@ -139,6 +139,6 @@ public class Professor extends Person implements Comparable<Professor>{
 	}
 	
 	public static void save(List list) {
-		SerializeDB.writeSerializedObject("professsor.dat", list);
+		SerializeDB.writeSerializedObject("professor.dat", list);
 	}
 }

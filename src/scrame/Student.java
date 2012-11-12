@@ -357,6 +357,7 @@ public class Student extends Person implements Comparable<Student> {
 			System.out.println();
 			System.out.println("1) Edit student");
 			System.out.println("2) Register for a course");
+			System.out.println("3) Show registered courses");
 			System.out.println("D) Delete student");
 			System.out.println();
 			System.out.println("0) Back to student list");
@@ -396,7 +397,50 @@ public class Student extends Person implements Comparable<Student> {
 						int courseChoice = GetType.getInt() - 1;
 						if ( courseChoice >= 0 && courseChoice < courseList.size() ) {
 							c = (Course) courseList.get(courseChoice);
+							List classList = c.getClassList();
+							
 							StudentCourse.register(s.getMatric(), c.getCode());
+							
+							boolean studentFound = false;
+							
+							for (int i = 0; i < classList.size(); i++) {
+								Class cl = (Class) classList.get(i);
+								if (cl.inClass(s)) studentFound = true;
+							}
+							
+							if (studentFound)
+								System.out.println("\n  Student is already enrolled in a class.");
+							
+							else {
+								if (classList.size() > 0) {
+									System.out.println("Select class");
+									System.out.println("-----------------------");
+									for (int i = 0; i < classList.size(); i++) {
+										Class cl = (Class) classList.get(i);
+										System.out.println(i + 1 + ") " + cl.getName() + " (Size: " + cl.getSize() + ", Vacancy: " + cl.getVacancy() + ")");
+									}
+									System.out.println("-----------------------");
+									System.out.print("Enter choice: ");
+									int classChoice = GetType.getInt();
+									
+									switch (classChoice) {
+										default:
+											if (classChoice > 0 && classChoice <= classList.size()) {
+												try {
+													Class cl = (Class) classList.get(classChoice-1);
+													cl.addStudent(s);
+												}
+												catch (Exception e) {
+													System.out.println("\n  Invalid choice.");
+												}
+											}
+											else System.out.println("\n  Invalid choice.");
+											break;
+									}
+								}
+								else
+									System.out.println("\nThere are no classes available for this course!");
+							}
 						}
 					}
 					
@@ -404,6 +448,36 @@ public class Student extends Person implements Comparable<Student> {
 						System.out.println("\nNo courses are available in the system.");
 					}
 					
+					break;
+				
+				// Show registered courses
+				case "3":
+					System.out.println("\nRegistered courses:");
+					System.out.println("-------------------------");
+					
+					courseList = StudentCourse.getStudentCourses(s.getMatric());
+					
+					if (courseList.size() > 0) {
+						for (int i = 0; i < courseList.size(); i++) {
+							Course c = (Course) courseList.get(i);
+							System.out.print(i + 1 + ") " + c.getCode() + " " + c.getTitle());
+							
+							// Print student's class or 'No class'
+							boolean found = false;
+							List<Class> classList = c.getClassList();
+							for (int o = 0; o < classList.size(); o++) {
+								Class cl = classList.get(i);
+								if (cl.inClass(s)) System.out.print(" (" + cl.getName() + ")");
+								found = true;
+							}
+							if (!found) System.out.print(" (No class)");
+						}
+						System.out.println();
+						System.out.println("-------------------------");
+					}
+					else {
+						System.out.println("The student is not registered for any courses.");
+					}
 					break;
 					
 				case "d":
@@ -536,26 +610,23 @@ public class Student extends Person implements Comparable<Student> {
 	        return (lastCmp != 0 ? lastCmp : super.getName().compareTo(s.getName()));
 	}
 	
-	public static void SearchStudent(String name)
+	public static void SearchStudent(String searchStr)
 	{
 		List list=getStudentList();
-		String storeName = null,storeMatric = null;
-		Boolean found=false;
+		int count = 0;
 		if (list != null && list.size() > 0) {
+			System.out.println();
+			System.out.println("Search results:");
+			System.out.println("---------------------");
 			for (int i = 0 ; i < list.size() ; i++) {
 				Student s = (Student)list.get(i);
-				if (s.getName().compareTo(name)==0) {
-					storeName=s.getName();
-					storeMatric=s.getMatric();
-					found=true;
-					break;
+				if (s.getName().toLowerCase().contains(searchStr.toLowerCase()) || s.getMatric().toUpperCase().contains(searchStr.toUpperCase())) {
+					System.out.println(count + 1 + ") " + s.getName() + " (" + s.getMatric() + ")");
+					count++;
 				}
 			}
 		}
-
-		if(found== true)
-			System.out.println(storeName + " (" + storeMatric + ")");
-		else
-			System.out.println("There is no such student.");
+		if (count > 0) System.out.println("\nTotal " + count + " results found.");
+		else System.out.println("That search query return 0 results.");
 	}
 }

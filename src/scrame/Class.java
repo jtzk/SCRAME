@@ -13,6 +13,7 @@ public class Class implements Serializable{
 	private ArrayList<Student> students;
 
 	public Class(String _name, String _course, int _size) {
+		professorName = "";
 		name = _name;
 		course = Course.getCourseByCode(_course).getCode();
 		size = _size;
@@ -53,12 +54,36 @@ public class Class implements Serializable{
 		}
 		return false;
 	}
-	public static List getClassList() {
-		return getClassList("class.dat");
+	
+	// Check if student is already in this class
+	public boolean inClass(Student s) {
+		// Check if student exists in <students> array
+		if (students != null && students.size() > 0) {
+			for (int i = 0; i < students.size(); i++) {
+				Student student = students.get(i);
+				// Student is already in this class
+				if (s.equals(student)) return true;
+			}
+		}
+		return false;
 	}
 	
-	public void save(List list) {
-		SerializeDB.writeSerializedObject("class.dat", list);
+	// Add student to class
+	public void addStudent(Student s) {
+		// Check if student is already in this class
+		if (inClass(s))	System.out.println(s.getName() + " (" + s.getMatric() + ") is already enrolled in this class.");
+		
+		// If not
+		else {
+			// Add student to <students> array
+			students.add(s);
+			System.out.println(s.getName() + " (" + s.getMatric() + ") has been enrolled in this class.");
+		}
+	}
+	
+	// Static methods
+	public static List getClassList() {
+		return getClassList("class.dat");
 	}
 	
 	public static List getClassList(String file) {
@@ -72,5 +97,19 @@ public class Class implements Serializable{
 		return list;
 	}
 	
+	public static Class getClassByName(String _name) {
+		List list = getClassList();
+		for (int i = 0; i < list.size(); i++) {
+			Class cl = (Class) list.get(i);
+			if (cl.getName().equals(_name)) {
+				return cl;
+			}
+		}
+		return null;
+	}
 	
+	
+	public void save(List list) {
+		SerializeDB.writeSerializedObject("class.dat", list);
+	}
 }
