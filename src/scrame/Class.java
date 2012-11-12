@@ -72,14 +72,5 @@ public class Class implements Serializable{
 		return list;
 	}
 	
-	public static void displayProfessor()
-	{
-		List list=Professor.getProfessorList();
-		for (int i = 0 ; i < list.size() ; i++) {
-			Professor p = (Professor)list.get(i);
-			System.out.println(i+1 + ") " + p.getName() + " (" + p.getEmail() + ")");
-		}
-	}
-	
 	
 }
