@@ -41,7 +41,7 @@ public class Exam extends CourseComponent{
 				list.add(em1);
 				Exam.save(list);		
 				System.out.println("\n "+em1.getCourseComponentCode() + em1.getCourseComponentPercent() + em1.getIndex() +" added!");
-				displayExamAll();
+				//displayExam(_courseCode);
 				remain=balance-sumUp(_courseCode);
 			}
 			//else if(remain==0)
