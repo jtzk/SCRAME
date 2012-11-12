@@ -41,7 +41,7 @@ public class TutorialEx extends CourseComponent{
 				list.add(tx);
 				TutorialEx.save(list);		
 				System.out.println("\n "+tx.getCourseComponentCode() + tx.getCourseComponentPercent() + tx.getIndex() +" added!");
-				displayTutorialExAll();
+				displayTutorialEx(_courseCode);
 				remain=balance-sumUp(_courseCode);
 			}
 			//else if(remain==0)
