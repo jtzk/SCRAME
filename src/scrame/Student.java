@@ -292,6 +292,7 @@ public class Student extends Person implements Comparable<Student> {
 			
 			list = getStudentList();
 			Collections.sort(list);
+			Student.save(list);
 			if (list != null && list.size() > 0) {
 				for (int i = 0 ; i < list.size() ; i++) {
 					Student s = (Student)list.get(i);
@@ -527,7 +528,7 @@ public class Student extends Person implements Comparable<Student> {
 		} while (!choice.equals("0") && !choice.equals("q") && !choice.equals("Q"));
 	}
 	
-	public void save(List list) {
+	public static void save(List list) {
 		SerializeDB.writeSerializedObject("student.dat", list);
 	}
 	public int compareTo(Student s) {
