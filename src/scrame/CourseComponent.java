@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class CourseComponent implements Serializable{
 	private String courseComponentCode;
-	private static int courseComponentPercent;
+	private int courseComponentPercent;
 	private int index;
 	
 	public CourseComponent(String _courseComponentCode, int _courseComponentPercent, int _index)
@@ -50,7 +50,7 @@ public class CourseComponent implements Serializable{
 //		} while (true);
 //	}
 //	
-	public static int processPercent(String Component) {
+	public  int processPercent(String Component) {
 		int _percent;
 		do {
 			try {
