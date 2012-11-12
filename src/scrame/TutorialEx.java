@@ -1,7 +1,6 @@
 package scrame;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -29,19 +28,19 @@ public class TutorialEx extends CourseComponent{
 						break;
 	
 					case '2':
-						
+						List list = getTutorialEx();
 						System.out.println("\nAdding new Tutorial Component");
 						System.out.println("-------------------------");	
 						
 						
 						// Process name
-						String _courseCode = GetType.getString();
+						System.out.println("Enter course code");
+						String _courseCode = GetType.getString().toUpperCase();
 						// Process percent
-						int  _percent = processPercent("Tutorial Percent");
-						List list = getTutorialEx();
+						System.out.println("Enter tutorial percent");
+						int  _percent = GetType.getInt();						
 						int index=0;
 						int storeNo=0;
-						//Boolean found=false;
 						if (list != null && list.size() > 0) {
 							for (int i = 0 ; i < list.size() ; i++) {
 								TutorialEx tx1 = (TutorialEx)list.get(i);
@@ -65,7 +64,7 @@ public class TutorialEx extends CourseComponent{
 						TutorialEx.save(list);		
 						System.out.println("\n "+tx.getCourseComponentCode() + tx.getCourseComponentPercent() + tx.getIndex() +" added!");
 						displayTutorialEx(_courseCode);
-											
+						break;					
 					case '0':
 						System.out.println("  Exiting to previous menu...");
 						break;
