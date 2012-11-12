@@ -6,6 +6,7 @@ import java.util.Vector;
 public class Class implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
+	private String professorName;
 	private String name;
 	private String course;
 	private int size;
@@ -70,4 +71,8 @@ public class Class implements Serializable{
 		if (list == null) list = new ArrayList();
 		return list;
 	}
+	
+
+	
+	
 }
