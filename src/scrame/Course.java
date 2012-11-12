@@ -1,9 +1,10 @@
 package scrame;
 
+
 import java.io.*;
 import java.util.*;
 
-public class Course implements Serializable, Comparable<Course> {
+public class Course implements Serializable, Comparable<Course>{
 	private static final long serialVersionUID = 1L;
 	
 	private String title;
@@ -115,7 +116,8 @@ public class Course implements Serializable, Comparable<Course> {
 						String _title = GetType.getString();
 						
 						System.out.print("Enter course AU: ");
-						int _au = GetType.getInt(); 				
+						int _au = GetType.getInt();
+							
 						List list = Course.getCourseList();
 						Course c = new Course(_title, _code, _au);
 						if (list == null) list = new ArrayList();
@@ -124,12 +126,15 @@ public class Course implements Serializable, Comparable<Course> {
 						System.out.println("\n  Course " + c.getTitle() + " added!");
 					}
 					
-					break;
-					
+
 				case '3':
 					System.out.print("Enter the course code: ");
 					String code=GetType.getString();
-					SearchCourse(code);
+					String storeCourseTitle=SearchCourse(code);
+					if(storeCourseTitle!=null)
+						System.out.println(storeCourseTitle + " (" + code + ") is found");
+					else
+						System.out.println("There is no such course.");
 					break;
 					
 				case '0':
@@ -146,7 +151,7 @@ public class Course implements Serializable, Comparable<Course> {
 	}
 	
 	public static void printCourseList() {
-		List list;
+		List list=null;
 		String choice = "f";
 		boolean skip = false;
 		
@@ -579,35 +584,30 @@ public class Course implements Serializable, Comparable<Course> {
 		au = _au;
 	}
 	
-	public void static save(List list) {
+	public static void save(List list) {
 		SerializeDB.writeSerializedObject("course.dat", list);
 	}
 	
 	public int compareTo(Course cs) {
-        	int lastCmp = getCode().compareTo(cs.getCode());
-       		return (lastCmp != 0 ? lastCmp : getCode().compareTo(cs.getCode()));
+        int lastCmp = getCode().compareTo(cs.getCode());
+        return (lastCmp != 0 ? lastCmp : getCode().compareTo(cs.getCode()));
 	}
 	
-	public static void SearchCourse(String code)
+	public static String SearchCourse(String code)
 	{
 		List list=getCourseList();
-		String storeCourseTitle = null,storeCourseCode = null;
+		String storeCourseTitle = null;
 		Boolean found=false;
 		if (list != null && list.size() > 0) {
 			for (int i = 0 ; i < list.size() ; i++) {
 				Course c = (Course)list.get(i);
 				if (c.getCode().compareTo(code)==0) {
 					storeCourseTitle=c.getTitle();
-					storeCourseCode=c.getCode();
 					found=true;
 					break;
 				}
 			}
 		}
-
-		if(found== true)
-			System.out.println(storeCourseTitle + " (" + storeCourseCode + ")");
-		else
-			System.out.println("There is no such course.");
+		return storeCourseTitle;
 	}
 }
