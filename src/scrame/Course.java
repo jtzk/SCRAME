@@ -1,10 +1,9 @@
 package scrame;
 
-
 import java.io.*;
 import java.util.*;
 
-public class Course implements Serializable, Comparable<Course>{
+public class Course implements Serializable, Comparable<Course> {
 	private static final long serialVersionUID = 1L;
 	
 	private String title;
@@ -151,7 +150,7 @@ public class Course implements Serializable, Comparable<Course>{
 	}
 	
 	public static void printCourseList() {
-		List list=null;
+		List list;
 		String choice = "f";
 		boolean skip = false;
 		
