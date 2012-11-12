@@ -1,9 +1,10 @@
 package scrame;
 
+
 public class Menu {
-	private int max=100;
-	private int balance=0;
-	private int remain=0;
+	private static int max=100;
+	private static int balance=0;
+	private static int remain=0;
 	public static void showMenu() {
 		System.out.println();
 		System.out.println("Please choose an option from the menu below:");
@@ -11,7 +12,8 @@ public class Menu {
 		System.out.println("1) Professors");
 		System.out.println("2) Students");
 		System.out.println("3) Courses");
-		System.out.println("4) Rawcases");
+		System.out.println("4) Course components");
+		System.out.println("5) Rawcases");
 		System.out.println("--------------------------------------------");
 		System.out.print("Enter choice: ");
 	}
@@ -48,43 +50,45 @@ public class Menu {
 	}
 	
 
-	public  void CourseComponentMenu(String _courseCode)
+	public static void CourseComponentMenu(String _courseCode)
 		{
-			int componentAmount=0,choice=0,sumUp=0;
+			int componentAmount=0,choice=0,sumUp=0,sumUp2=0;
 			System.out.print("Enter component amount: ");
 			componentAmount=GetType.getInt();
 			while(componentAmount>0)
 			{
+				System.out.println("");
 				System.out.println("Select the component");
+				System.out.println("--------------------------------------------");
 				System.out.println("1)Assignment");
 				System.out.println("2)Quiz");
 				System.out.println("3)Report");
 				System.out.println("4)Exam");	
 				System.out.println("5)Tutorial");
-				System.out.printf("\nEnter your choice => ");
+				System.out.print("\nEnter your choice => ");
 				choice= GetType.getInt();
+				System.out.println("");
 				switch (choice)
 				{
 					case 1:
-//						System.out.print("coursecode "+_courseCode);
-//						sumUp=Assignment.sumUp(_courseCode);
-//						System.out.println("total"+sumUp);
-//						if(sumUp<100)
-//						{
-//							remain=Assignment.add(_courseCode, max);
-//							System.out.print("remain "+remain);
-//							if (remain==-1){
-//								//increase counter to request user add 1 more component
-//								componentAmount+=1;
-//								System.out.println("Component percent exceeded.");
-//							}
-//							else if(remain >0){
-//								//increase counter to request user add 1 more component
-//								componentAmount+=1;
-//								System.out.println("Component percent not full.");
-//							}
-					//	}
-						
+						System.out.print("coursecode "+_courseCode);
+						sumUp=Assignment.sumUp(_courseCode);
+						System.out.println("total"+sumUp);
+						if(sumUp<100)
+						{
+							remain=Assignment.addAssignment(_courseCode, max);
+							System.out.print("remain "+remain);
+							if (remain==-1){
+								//increase counter to request user add 1 more component
+								componentAmount+=1;
+								System.out.println("Component percent exceeded.");
+							}
+							else if(remain >0){
+								//increase counter to request user add 1 more component
+								componentAmount+=1;
+								System.out.println("Component percent not full.");
+							}
+						}
 						
 						break;
 						
@@ -103,18 +107,18 @@ public class Menu {
 					case 5:
 						System.out.print("coursecode "+_courseCode);
 						
-						sumUp=TutorialEx.sumUp(_courseCode);
+						sumUp2=TutorialEx.sumUp(_courseCode);
 						//System.out.println("total"+sumUp);
-						if(sumUp<100)
+						if(sumUp2<100)
 						{
 							remain=TutorialEx.addTutorial(_courseCode, max);
-							//System.out.print("remain "+remain);
+							System.out.println("Remain "+remain + "percent");
 							if (remain==-1){
 								//increase counter to request user add 1 more component
 								componentAmount+=1;
 								System.out.println("Component percent exceeded.");
 							}
-							else if(remain >0&&componentAmount==0){
+							else if(remain >0||componentAmount==0){
 								//increase counter to request user add 1 more component
 								componentAmount+=1;
 								System.out.println("Component percent not full.");
@@ -130,6 +134,10 @@ public class Menu {
 						break;
 				}//end switch
 				componentAmount--;
+			}
+			if (remain==0)
+			{
+				System.out.println("Component percent completed");		
 			}
 		}
 }
