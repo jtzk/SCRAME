@@ -157,6 +157,7 @@ public class Course implements Serializable, Comparable<Course> {
 			
 			list = getCourseList();
 			Collections.sort(list);
+			Course.save(list);
 			if (list != null && list.size() > 0) {
 				for (int i = 0 ; i < list.size() ; i++) {
 					Course c = (Course) list.get(i);
@@ -578,7 +579,7 @@ public class Course implements Serializable, Comparable<Course> {
 		au = _au;
 	}
 	
-	public void save(List list) {
+	public void static save(List list) {
 		SerializeDB.writeSerializedObject("course.dat", list);
 	}
 	
