@@ -1,6 +1,7 @@
 package scrame;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -11,7 +12,7 @@ public class TutorialEx extends CourseComponent{
 		// TODO Auto-generated constructor stub
 	}
 
-	public static void menu()
+	public static void menuTutorial()
 	{
 		char choice = '1';
 			
@@ -24,15 +25,46 @@ public class TutorialEx extends CourseComponent{
 				
 				switch (choice) {
 					case '1':
-				//	    printTutorialList();
+						displayTutorialExAll();
 						break;
 	
 					case '2':
+						
 						System.out.println("\nAdding new Tutorial Component");
 						System.out.println("-------------------------");	
-
+						
+						
+						// Process name
+						String _courseCode = GetType.getString();
 						// Process percent
 						int  _percent = processPercent("Tutorial Percent");
+						List list = getTutorialEx();
+						int index=0;
+						int storeNo=0;
+						//Boolean found=false;
+						if (list != null && list.size() > 0) {
+							for (int i = 0 ; i < list.size() ; i++) {
+								TutorialEx tx1 = (TutorialEx)list.get(i);
+								if (_courseCode.compareTo(tx1.getCourseComponentCode())==0){
+									if(tx1.getIndex()==0)
+										storeNo=1;
+									else{
+										storeNo=tx1.getIndex();
+										
+									}
+									
+								}
+							}
+						}
+						index=storeNo+1;
+						TutorialEx tx= new TutorialEx(_courseCode, _percent, index);
+	
+												
+						if (list == null) list = new ArrayList();
+						list.add(tx);
+						TutorialEx.save(list);		
+						System.out.println("\n "+tx.getCourseComponentCode() + tx.getCourseComponentPercent() + tx.getIndex() +" added!");
+						displayTutorialEx(_courseCode);
 											
 					case '0':
 						System.out.println("  Exiting to previous menu...");
@@ -58,7 +90,7 @@ public class TutorialEx extends CourseComponent{
 			
 			list = getTutorialEx();
 
-			displayTutorialEx();	
+			displayTutorialExAll();	
 			System.out.println();
 			System.out.println("0) Back to TutorialEx menu");
 			System.out.println("Q) Exit program");
@@ -95,21 +127,42 @@ public class TutorialEx extends CourseComponent{
 		return list;
 	}
 	
-	public static void displayTutorialEx()
+	public static void displayTutorialEx(String _courseCode)
 	{
-		TutorialEx tx1 = null;
-		String _courseCode= tx1.getCourseComponentCode();
-		String _courseTitle= Course.SearchCourse(_courseCode);
 		List list=getTutorialEx();
-		for (int i = 0 ; i < list.size() ; i++) {
-			TutorialEx tx = (TutorialEx)list.get(i);
-			
-			System.out.println("Tutorial excerise" + tx.getIndex() + " (" + tx.getCourseComponentPercent()+ ")");
-		}
+		String _courseTitle= Course.SearchCourse(_courseCode);
+		System.out.println("Tutorial course -"+_courseTitle);
+			if (list != null && list.size() > 0) {
+				for (int i = 0 ; i < list.size() ; i++) {
+					TutorialEx tx = (TutorialEx)list.get(i);
+					if(tx.getCourseComponentCode().compareTo(_courseCode)==0)
+					System.out.println("Tutorial excerise" + tx.getIndex() + " (" + tx.getCourseComponentPercent()+ ")");
+				}
+			}
+			else {
+				System.out.println("There are no tutorial exercise for this " + _courseTitle);
+			}
+
 	}
+	
+
+	public static void displayTutorialExAll()
+	{
+		List list=getTutorialEx();
+			if (list != null && list.size() > 0) {
+				for (int i = 0 ; i < list.size() ; i++) {
+					TutorialEx tx = (TutorialEx)list.get(i);
+					System.out.println(tx.getCourseComponentCode() + tx.getIndex() + " (" + tx.getCourseComponentPercent()+ ")");
+				}
+			}
+			else {
+				System.out.println("There are no tutorial exercise for this ");
+			}
+
+	}
+	
 	public static void save(List list) {
 		SerializeDB.writeSerializedObject("tutorialex.dat", list);
 	}
 	
 }
-
