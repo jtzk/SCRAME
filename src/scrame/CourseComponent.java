@@ -83,4 +83,11 @@ public class CourseComponent implements Serializable{
 			}
 		} while (true);
 	}
+	
+	public static int sumUpAll(String _courseCode)
+	{
+		int sumUpAll=0;
+		sumUpAll=Exam.sumUp(_courseCode)+Report.sumUp(_courseCode)+Quiz.sumUp(_courseCode)+Assignment.sumUp(_courseCode)+TutorialEx.sumUp(_courseCode);
+		return sumUpAll;
+	} 
 }
