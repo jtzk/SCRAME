@@ -41,7 +41,7 @@ public class Assignment extends CourseComponent{
 				list.add(ass1);
 				Assignment.save(list);		
 				System.out.println("\n "+ass1.getCourseComponentCode() + ass1.getCourseComponentPercent() + ass1.getIndex() +" added!");
-				displayAssignmentAll();
+				//displayAssignment(_courseCode);
 				remain=balance-sumUp(_courseCode);
 			}
 			//else if(remain==0)
@@ -69,7 +69,7 @@ public class Assignment extends CourseComponent{
 		return list;
 	}
 	
-	public static void displayAssigment(String _courseCode)
+	public static void displayAssignment(String _courseCode)
 	{
 		List list=getAssignment();
 		String _courseTitle= Course.SearchCourse(_courseCode);
