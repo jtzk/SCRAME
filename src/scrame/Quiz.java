@@ -41,7 +41,7 @@ public class Quiz extends CourseComponent{
 				list.add(qz1);
 				Quiz.save(list);		
 				System.out.println("\n "+qz1.getCourseComponentCode() + qz1.getCourseComponentPercent() + qz1.getIndex() +" added!");
-				displayQuizAll();
+				//displayQuiz(_courseCode);
 				remain=balance-sumUp(_courseCode);
 			}
 			//else if(remain==0)
