@@ -50,9 +50,7 @@ public class Professor extends Person implements Comparable<Professor>{
 		}
 		return false;
 	}
-	public void save(List list) {
-		SerializeDB.writeSerializedObject("professsor.dat", list);
-	}
+
 	
 	public static List getProfessorList() {
 		return getProfessorList("professor.dat");
@@ -85,13 +83,9 @@ public class Professor extends Person implements Comparable<Professor>{
 			System.out.println("-----------------------");
 			
 			list = getProfessorList();
-
 			Collections.sort(list);
-			for (int i = 0 ; i < list.size() ; i++) {
-				Professor p = (Professor)list.get(i);
-				System.out.println(i+1 + ") " + p.getName() + " (" + p.getEmail() + ")");
-			}
-			
+			Professor.save(list);
+			displayProfessor();	
 			System.out.println();
 			System.out.println("0) Back to professor menu");
 			System.out.println("Q) Exit program");
@@ -111,6 +105,7 @@ public class Professor extends Person implements Comparable<Professor>{
 			}
 		} while (!choice.equals("0") && !choice.equals("q") && !choice.equals("Q") && !skip);
 	}
+	
 	public static void SearchProfessor(String name)
 	{
 		List list=getProfessorList();
@@ -132,5 +127,18 @@ public class Professor extends Person implements Comparable<Professor>{
 			System.out.println(storeName + " (" + storeEmail + ")");
 		else
 			System.out.println("There is no such professor.");
+	}
+	
+	public static void displayProfessor()
+	{
+		List list=getProfessorList();
+		for (int i = 0 ; i < list.size() ; i++) {
+			Professor p = (Professor)list.get(i);
+			System.out.println(i+1 + ") " + p.getName() + " (" + p.getEmail() + ")");
+		}
+	}
+	
+	public static void save(List list) {
+		SerializeDB.writeSerializedObject("professsor.dat", list);
 	}
 }
