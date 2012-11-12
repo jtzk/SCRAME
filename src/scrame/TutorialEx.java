@@ -3,7 +3,6 @@ package scrame;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class TutorialEx extends CourseComponent{
 	
 	public TutorialEx(String _courseComponentCode, int _courseComponentPercent,int _index) {
@@ -31,14 +30,11 @@ public class TutorialEx extends CourseComponent{
 						List list = getTutorialEx();
 						System.out.println("\nAdding new Tutorial Component");
 						System.out.println("-------------------------");	
-						
-						
-						// Process name
-						System.out.println("Enter course code");
-						String _courseCode = GetType.getString().toUpperCase();
+							
+						// Process CourseCode
+						String _courseCode = processCourseCode("tutorial");
 						// Process percent
-						System.out.println("Enter tutorial percent");
-						int  _percent = GetType.getInt();						
+						int  _percent = processPercent("tutorial");						
 						int index=0;
 						int storeNo=0;
 						if (list != null && list.size() > 0) {
@@ -47,14 +43,12 @@ public class TutorialEx extends CourseComponent{
 								if (_courseCode.compareTo(tx1.getCourseComponentCode())==0){
 									if(tx1.getIndex()==0)
 										storeNo=1;
-									else{
+									else
 										storeNo=tx1.getIndex();
-										
-									}
-									
 								}
 							}
 						}
+						
 						index=storeNo+1;
 						TutorialEx tx= new TutorialEx(_courseCode, _percent, index);
 	
@@ -77,6 +71,7 @@ public class TutorialEx extends CourseComponent{
 				}
 			} while (choice != '0' && choice != 'q' && choice != 'Q');		
 	}
+	
 	public static void printTutorialExList() {
 		List list;
 		String choice = "f";
