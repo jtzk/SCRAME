@@ -1,6 +1,5 @@
 package scrame;
 
-
 public class Menu {
 
 	public static void showMenu() {
@@ -51,14 +50,17 @@ public class Menu {
 	public static void courseComponentMenu(String _courseCode)
 	{
 		 int max=100;
-		 int remain=0;
+		 int remain=CourseComponent.sumUpAll(_courseCode);
 		 int componentAmount=0,choice=0,sumUpAll=0;
-		 //int sumUp1=0,sumUp2=0,sumUp3=0,sumUp4=0,sumUp5=0;
-		 int remainR=0;
-		 System.out.print("Enter component amount: ");
-		 componentAmount=GetType.getInt();
-		 while(componentAmount>0)
+		 if(CourseComponent.sumUpAll(_courseCode)<100){
+			 System.out.print("Enter component amount: ");
+		 	componentAmount=GetType.getInt();
+		 }
+		 
+		 while(componentAmount>0&&CourseComponent.sumUpAll(_courseCode)<100)
 		 {
+			 	int remainR=100-CourseComponent.sumUpAll(_courseCode);
+			 	System.out.println("Remain "+remainR);
 				System.out.println("");
 				System.out.println("Select the component");
 				System.out.println("--------------------------------------------");
@@ -69,27 +71,18 @@ public class Menu {
 				System.out.println("5)Tutorial");
 				System.out.print("\nEnter your choice => ");
 				choice= GetType.getInt();
-				System.out.println("");
+				
 				sumUpAll=CourseComponent.sumUpAll(_courseCode);
-				System.out.println("SumUpAll"+ sumUpAll);
-				System.out.println("");
-				remainR=max-sumUpAll;
 				switch (choice)
 				{
 					
 					case 1:
-						System.out.println("coursecode "+_courseCode);
-						//sumUp1=Assignment.sumUp(_courseCode);
-						//System.out.println("sumUp1 "+sumUp1);
-						System.out.println("");
 						if(sumUpAll<100)
 						{
 							remain=Assignment.addAssignment(_courseCode, remainR);
-							System.out.println("remain "+remain);
 							if (remain<0){
 								//increase counter to request user add 1 more component
 								componentAmount+=1;
-								System.out.println("Component percent exceeded.");
 							}
 							else if(remain >0){
 								//increase counter to request user add 1 more component
@@ -101,18 +94,13 @@ public class Menu {
 						break;
 						
 					case 2:
-						System.out.println("coursecode "+_courseCode);
-						//sumUp2=Quiz.sumUp(_courseCode);
-						//System.out.println("sumUp2 "+sumUp2);
 						System.out.println("");
 						if(sumUpAll<100)
 						{
 							remain=Quiz.addQuiz(_courseCode, remainR);
-							System.out.println("remain "+remain);
 							if (remain<0){
 								//increase counter to request user add 1 more component
 								componentAmount+=1;
-								System.out.println("Component percent exceeded.");
 							}
 							else if(remain >0){
 								//increase counter to request user add 1 more component
@@ -123,18 +111,13 @@ public class Menu {
 						break;
 						
 					case 3:
-						System.out.println("coursecode "+_courseCode);
-						//sumUp3=Report.sumUp(_courseCode);
-						//System.out.println("sumUp3 "+sumUp3);
 						System.out.println("");
 						if(sumUpAll<100)
 						{
 							remain=Report.addReport(_courseCode, remainR);
-							System.out.println("remain "+remain);
 							if (remain<0){
 								//increase counter to request user add 1 more component
 								componentAmount+=1;
-								System.out.println("Component percent exceeded.");
 							}
 							else if(remain >0){
 								//increase counter to request user add 1 more component
@@ -145,18 +128,13 @@ public class Menu {
 						break;
 						
 					case 4: 
-						System.out.println("coursecode "+_courseCode);
-						//sumUp4=Exam.sumUp(_courseCode);
-						//System.out.println("sumUp4 "+sumUp4);
 						System.out.println("");
 						if(sumUpAll<100)
 						{
 							remain=Exam.addExam(_courseCode,remainR);
-							System.out.println("remain "+remain);
 							if (remain<0){
 								//increase counter to request user add 1 more component
 								componentAmount+=1;
-								System.out.println("Component percent exceeded.");
 							}
 							else if(remain >0){
 								//increase counter to request user add 1 more component
@@ -167,18 +145,13 @@ public class Menu {
 						break;
 						
 					case 5:
-						System.out.println("coursecode "+_courseCode);
-						//sumUp5=TutorialEx.sumUp(_courseCode);
-						//System.out.println("sumUp5 "+sumUp5);
 						System.out.println("");
 						if(sumUpAll<100)
 						{
 							remain=TutorialEx.addTutorial(_courseCode, remainR);
-							System.out.println("Remain "+remain + "percent");
 							if (remain<0){
 								//increase counter to request user add 1 more component
 								componentAmount+=1;
-								System.out.println("Component percent exceeded.");
 							}
 							else if(remain >0||componentAmount==0){
 								//increase counter to request user add 1 more component
