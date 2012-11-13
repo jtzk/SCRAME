@@ -30,28 +30,25 @@ public class Exam extends CourseComponent{
 			}
 		}
 		index=storeNo+1;
-		System.out.println("\n "+_courseCode +" "+ courseType +" "+ _percent+" " +index);
+		
 		Exam em1= new Exam(_courseCode,courseType, _percent, index);
-			if (list == null) list = new ArrayList();
-			
-			int subtotal=_percent+sumUp(_courseCode);
-			//System.out.println("subtotal"+subtotal);
-			if(balance>0&&subtotal<=100)
-			{		
-				list.add(em1);
-				Exam.save(list);		
-				System.out.println("\n "+em1.getCourseComponentCode() + em1.getCourseComponentPercent() + em1.getIndex() +" added!");
-				//displayExam(_courseCode);
-				remain=balance-sumUp(_courseCode);
-			}
-			//else if(remain==0)
-			//	System.out.println("Course component ("+_courseCode+ ")"+" is done");
-			else{
-				System.out.println("\n "+em1.getCourseComponentCode() + em1.getCourseComponentPercent() + em1.getIndex() +" not added! Exceeded balance");
-				remain=-1;
-			}
+		if (list == null) list = new ArrayList();
+		int subtotal=_percent+sumUp(_courseCode);
 
-			return remain;
+		if(balance>0&&subtotal<=100)
+		{		
+			list.add(em1);
+			Exam.save(list);		
+			System.out.println(courseType + index + " (" + _percent+ ")" +" added!");
+			remain=balance-_percent;
+		}
+			
+		else{
+			System.out.println(courseType + index + " (" + _percent+ ")" +" not added! Exceeded balance!");
+			remain=-1;
+		}
+
+		return remain;
 	}
 	
 	public static List getExam() {
@@ -82,11 +79,10 @@ public class Exam extends CourseComponent{
 				}
 			}
 			else {
-				System.out.println("There are no exam for this " + _courseTitle);
+				System.out.println("There are no exams for this " + _courseTitle);
 			}
 
 	}
-	
 
 	public static void displayExamAll()
 	{
@@ -98,7 +94,7 @@ public class Exam extends CourseComponent{
 				}
 			}
 			else {
-				System.out.println("There are no exam");
+				System.out.println("There are no exams");
 			}
 
 	}
@@ -115,7 +111,6 @@ public class Exam extends CourseComponent{
 				
 			}
 		}
-		//System.out.println("\nsum"+sum);
 		return sum;
 	}
 	
