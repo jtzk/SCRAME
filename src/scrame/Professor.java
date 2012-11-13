@@ -129,6 +129,10 @@ public class Professor extends Person implements Comparable<Professor>{
 			System.out.println("There is no such professor.");
 	}
 	
+	public static Professor getProfessorByName(String _name) {
+		return getProfessorByName(_name, "professor.dat");
+	}
+	
 	public static Professor getProfessorByName(String _name, String file) {
 		List list = getProfessorList(file);
 		if (list != null && list.size() > 0) {

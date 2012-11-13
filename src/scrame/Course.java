@@ -9,13 +9,15 @@ public class Course implements Serializable, Comparable<Course> {
 	private String title;
 	private String code;
 	private int au;
+	private String professor;
 	private List<Class> classes;
 
-	public Course(String _title, String _code, int _au)
+	public Course(String _title, String _code, int _au, String _profName)
 	{
 		title = _title;
 		code = _code;
 		au = _au;
+		professor = _profName;
 		classes = new ArrayList<Class>();
 	}
 
@@ -32,6 +34,10 @@ public class Course implements Serializable, Comparable<Course> {
 	public int getAU()
 	{
 		return au;
+	}
+	
+	public Professor getProf() {
+		return Professor.getProfessorByName(professor);
 	}
 
 	public List<Class> getClassList() {
@@ -118,8 +124,32 @@ public class Course implements Serializable, Comparable<Course> {
 					System.out.print("Enter course AU: ");
 					int _au = GetType.getInt();
 
+					System.out.println("\nSelect course professor:");
+					System.out.println("--------------------------");
+					String _profName = "";
+					List profList = Professor.getProfessorList();
+					for (int i = 0; i < profList.size(); i++) {
+						Professor p = (Professor) profList.get(i);
+						System.out.println(i + 1 + ") " + p.getName() + " (" + p.getEmail() + ")");
+					}
+					System.out.println("--------------------------");
+					System.out.print("Enter choice: ");
+
+					do {
+						try {
+							int profChoice = GetType.getInt();
+							if (profChoice > 0 && profChoice <= profList.size()) {
+								Professor p = (Professor) profList.get(profChoice-1);
+								_profName = p.getName();
+								break;
+							}
+						}
+						catch (Exception e) {}
+						System.out.println("\n  Invalid choice.");
+					} while (true);
+
 					List list = Course.getCourseList();
-					Course c = new Course(_title, _code, _au);
+					Course c = new Course(_title, _code, _au, _profName);
 					if (list == null) list = new ArrayList();
 					list.add(c);
 					c.save(list);			
@@ -217,16 +247,18 @@ public class Course implements Serializable, Comparable<Course> {
 			System.out.println();
 			System.out.println("Course");
 			System.out.println("-------------------------------");
-			System.out.println("Code:  " + c.getCode());
-			System.out.println("Title: " + c.getTitle());
-			System.out.println("AU:    " + c.getAU());
+			System.out.println("Code:      " + c.getCode());
+			System.out.println("Title:     " + c.getTitle());
+			System.out.println("AU:        " + c.getAU());
+			Professor p = c.getProf();
+			System.out.println("Professor: " + p.getName() + " (" + p.getEmail() + ") (" + p.getContact() + ")");
 			System.out.println();
 			System.out.println("1) Edit course code");
 			System.out.println("2) Edit course title");
 			System.out.println("3) Edit course AU");
 			System.out.println("4) Manage classes");
 			System.out.println("5) Show registered students");
-			System.out.println("6) Show coordinated professor");
+			System.out.println("6) Edit professor");
 			System.out.println("7) Show course statistics");
 			System.out.println("D) Delete course");
 			System.out.println();
@@ -263,9 +295,9 @@ public class Course implements Serializable, Comparable<Course> {
 				break;
 
 			case "6":
-				ProfessorCourse.printProfessorCourseList(c.code);
+				c.updateProfessor();
 				break;
-				
+
 			case "7":
 				c.printStatistics();
 				break;
@@ -652,5 +684,28 @@ public class Course implements Serializable, Comparable<Course> {
 			}
 		}
 		return storeCourseTitle;
+	}
+	
+	public void updateProfessor() {
+		do {
+			System.out.println("\nSelect new professor:");
+			System.out.println("------------------------");
+			Professor.displayProfessor();
+			System.out.println("------------------------");
+			System.out.print("Enter choice: ");
+			
+			try {
+				List profList = Professor.getProfessorList();
+				int newProf = GetType.getInt();
+				if (newProf > 0 && newProf <= profList.size()) {
+					Professor p = (Professor) profList.get(newProf-1);
+					professor = p.getName();
+					System.out.println("\n  Changed professor to " + p.getName());
+					break;
+				}
+			}
+			catch (Exception e) {}
+			System.out.println("\n  Invalid choice.");
+		} while (true);
 	}
 }

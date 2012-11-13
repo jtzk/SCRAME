@@ -73,12 +73,12 @@ public class RawCase  {
 	public void rawCourse() {
 		List list = new ArrayList();
 		Course[] c = new Course[40];
-		c[0] = new Course("Object Oriented Programming", "CZ2002", 3);
-		c[1] = new Course("Software Engineering", "CZ2006", 3);	
-		c[2] = new Course("Human Resource Management", "CZ8003", 4);		
-		c[3] = new Course("Green Computing", "CZ1002", 2);	
-		c[4] = new Course("Engineering Math", "CZ1008", 3);	 
-		c[5] = new Course("Engineer and Society", "CZ0001", 4);
+		c[0] = new Course("Object Oriented Programming", "CZ2002", 3, "Joseph Lay");
+		c[1] = new Course("Software Engineering", "CZ2006", 3, "Mary yeo");	
+		c[2] = new Course("Human Resource Management", "CZ8003", 4, "Colin Eng");		
+		c[3] = new Course("Green Computing", "CZ1002", 2, "Swee Peng");	
+		c[4] = new Course("Engineering Math", "CZ1008", 3, "Steven Pone");	 
+		c[5] = new Course("Engineer and Society", "CZ0001", 4, "Kelvin Jones");
 
 		for (int i = 0; i < 6; i++) {
 			c[i].newClass("SSP1", c[i].getCode(), 20);
@@ -205,26 +205,6 @@ public class RawCase  {
 
 	}
 
-	public void rawProfessorCourse() {
-		List<ProfessorCourse> list= new ArrayList();
-		ProfessorCourse[] pc = new ProfessorCourse[50];
-
-		pc[0] = new ProfessorCourse("Joseph Lay", "CZ0001");
-		pc[1] = new ProfessorCourse("Mary yeo", "CZ0002");
-		pc[2] = new ProfessorCourse("Wong Ping", "CZ0006");
-		pc[3] = new ProfessorCourse("Colin Eng", "CZ8003");
-		pc[4] = new ProfessorCourse("Swee Peng", "CZ1002");
-		pc[5] = new ProfessorCourse("Kelvin Jones", "CZ1008");
-
-
-		for (int i =0; i <6;i++){
-			list.add(pc[i]);
-		}
-
-		SerializeDB.writeSerializedObject("professorcourse.dat", list);
-
-	}
-
 	public void rawComponents()
 	{
 		List<CourseComponent> list = new ArrayList();
@@ -251,6 +231,5 @@ public class RawCase  {
 		rawCourse();
 		rawStudentCourse();
 		rawComponents();
-		rawProfessorCourse();
 	}
 }
