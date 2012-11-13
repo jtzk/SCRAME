@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CourseComponent implements Serializable, Comparable<CourseComponent>{
+public class Component implements Serializable, Comparable<Component>{
 	private String course;
 	private String name;
 	private int weightage;
 	private String type;
 	private ArrayList marks;
 
-	public CourseComponent(String _course, int _weightage, String _type, String _name)
+	public Component(String _course, int _weightage, String _type, String _name)
 	{
 		course = _course;
 		name = _name;
@@ -60,7 +60,7 @@ public class CourseComponent implements Serializable, Comparable<CourseComponent
 		weightage = _weightage;
 	}
 
-	public int compareTo(CourseComponent cc) {
+	public int compareTo(Component cc) {
         int lastCmp = (type + " " + name).compareTo((cc.type + " " + cc.name));
         return (lastCmp != 0 ? lastCmp : (type + " " + name).compareTo((cc.type + " " + cc.name)));
 	}
@@ -125,7 +125,7 @@ public class CourseComponent implements Serializable, Comparable<CourseComponent
 		List componentList = new ArrayList();
 		
 		for (int i = 0; i < list.size(); i++) {
-			CourseComponent cc = (CourseComponent) list.get(i);
+			Component cc = (Component) list.get(i);
 			if (cc.getCourse().equals(_course))
 				componentList.add(cc);
 		}
@@ -155,7 +155,7 @@ public class CourseComponent implements Serializable, Comparable<CourseComponent
 	public static boolean componentExists(String _type, String _name) {
 		List list = getComponentList();
 		for (int i = 0; i < list.size(); i++) {
-			CourseComponent cc = (CourseComponent) list.get(i);
+			Component cc = (Component) list.get(i);
 			if (cc.getType().equals(_type) && cc.getName().equals(_name)) {
 				return true;
 			}
@@ -208,7 +208,7 @@ public class CourseComponent implements Serializable, Comparable<CourseComponent
 				
 				if (_weightage > 0) {
 					weightage = _weightage;				
-					List ccList = CourseComponent.getComponentList();
+					List ccList = Component.getComponentList();
 					ccList.add(this);
 					save(ccList);
 					System.out.println("\n  Added " + TextFormat.capitalize(type) + ": " + name);
@@ -288,7 +288,7 @@ public class CourseComponent implements Serializable, Comparable<CourseComponent
 	public static void deleteCourse(String _course) {
 		List list = getComponentList();
 		for (int i = 0; i < list.size(); i++) {
-			CourseComponent cc = (CourseComponent) list.get(i);
+			Component cc = (Component) list.get(i);
 			if (cc.course.equals(_course)) {
 				list.remove(cc);
 			}
@@ -299,7 +299,7 @@ public class CourseComponent implements Serializable, Comparable<CourseComponent
 	public static void deleteStudent(Student _student) {
 		List list = getComponentList();
 		for (int i = 0; i < list.size(); i++) {
-			CourseComponent cc = (CourseComponent) list.get(i);
+			Component cc = (Component) list.get(i);
 			for (int o = 0; o < cc.marks.size(); o++) {
 				Pair pair = (Pair) cc.marks.get(o);
 				if (pair.left.equals(_student)) {

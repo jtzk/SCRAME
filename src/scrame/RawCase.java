@@ -207,21 +207,21 @@ public class RawCase  {
 
 	public void rawComponents()
 	{
-		List<CourseComponent> list = new ArrayList();
-		CourseComponent.save(list);
-		CourseComponent[] cc = new CourseComponent[3];
+		List<Component> list = new ArrayList();
+		Component.save(list);
+		Component[] cc = new Component[3];
 		
-		cc[0] = new CourseComponent("CZ0001", 15, "assignment", "1");
+		cc[0] = new Component("CZ0001", 15, "assignment", "1");
 		list.add(cc[0]);
-		CourseComponent.save(list);
+		Component.save(list);
 		
-		cc[1] = new CourseComponent("CZ0001", 15, "assignment", "2");
+		cc[1] = new Component("CZ0001", 15, "assignment", "2");
 		list.add(cc[1]);
-		CourseComponent.save(list);
+		Component.save(list);
 		
-		cc[2] = new CourseComponent("CZ0001", 70, "exam", "Final");
+		cc[2] = new Component("CZ0001", 70, "exam", "Final");
 		list.add(cc[2]);
-		CourseComponent.save(list);
+		Component.save(list);
 	}
 
 	public void rawAll()

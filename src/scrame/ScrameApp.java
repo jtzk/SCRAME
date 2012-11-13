@@ -25,7 +25,7 @@ public class ScrameApp {
 				break;
 
 			case'4':
-				CourseComponent.menuComponent();
+				Component.menuComponent();
 				break;
 
 			case '5':

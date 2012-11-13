@@ -313,7 +313,7 @@ public class Course implements Serializable, Comparable<Course> {
 					// Update registered course list
 					StudentCourse.deleteCourse(c.getCode());
 					// Update component list
-					CourseComponent.deleteCourse(c.getCode());
+					Component.deleteCourse(c.getCode());
 					String deletedTitle = c.getTitle();
 					String deletedCode = c.getCode();
 
@@ -344,7 +344,7 @@ public class Course implements Serializable, Comparable<Course> {
 		System.out.println("------------------------------");
 		System.out.println("Students enrolled:       " + StudentCourse.countStudentsByCourse(code));
 		System.out.println("Tutorial/Lab classes:    " + getClassList().size());
-		List componentList = CourseComponent.getComponentListByCourse(code);
+		List componentList = Component.getComponentListByCourse(code);
 		System.out.println("Components:              " + componentList.size());
 		System.out.println("------------------------------");
 	}

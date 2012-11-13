@@ -508,7 +508,7 @@ public class Student extends Person implements Comparable<Student> {
 					// Update registered course list
 					StudentCourse.deleteStudent(s.getMatric());
 					// Update component list
-					CourseComponent.deleteStudent(s);
+					Component.deleteStudent(s);
 
 					String deletedName = s.getName();
 					String deletedMatric = s.getMatric();
@@ -551,9 +551,9 @@ public class Student extends Person implements Comparable<Student> {
 			double score = 0.0;
 			Course c = (Course) courseList.get(i);
 			// for each component, add marks / weightage to score
-			List componentList = CourseComponent.getComponentListByCourse(c.getCode());
+			List componentList = Component.getComponentListByCourse(c.getCode());
 			for (int o = 0; o < componentList.size(); o++) {
-				CourseComponent cc = (CourseComponent) componentList.get(o);
+				Component cc = (Component) componentList.get(o);
 				score += (double) (cc.getMarks(this) * cc.getWeightage() / 100);
 				if (score >= 80) totalGP += 4 * c.getAU();
 				else if (score >= 70) totalGP += 3 * c.getAU();

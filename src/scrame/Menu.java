@@ -63,14 +63,14 @@ public class Menu {
 			System.out.println(c.getCode() + " (" + c.getTitle() + ") Components");
 			System.out.println("----------------------");
 
-			List componentList = CourseComponent.getComponentListByCourse(_courseCode);
+			List componentList = Component.getComponentListByCourse(_courseCode);
 			Collections.sort(componentList);
 			
 			if (componentList.size() > 0) {
 				int totalWeightage = 0;
 				
 				for (int i = 0; i < componentList.size(); i++) {
-					CourseComponent cc = (CourseComponent) componentList.get(i);
+					Component cc = (Component) componentList.get(i);
 					System.out.println(i + 1 + ") " + TextFormat.capitalize(cc.getType()) + ": " + cc.getName() + " (" + cc.getWeightage() + "%)");
 					totalWeightage += cc.getWeightage();
 				}
@@ -126,25 +126,25 @@ public class Menu {
 					switch (componentChoice) {
 					case "1":
 						_type = "assignment";
-						CourseComponent newCC = new CourseComponent(c.getCode(), 0, _type, "");
+						Component newCC = new Component(c.getCode(), 0, _type, "");
 						newCC.processNewComponent();
 						break;
 						
 					case "2":
 						_type = "attendance";
-						newCC = new CourseComponent(c.getCode(), 0, _type, "");
+						newCC = new Component(c.getCode(), 0, _type, "");
 						newCC.processNewComponent();
 						break;
 						
 					case "3":
 						_type = "quiz";
-						newCC = new CourseComponent(c.getCode(), 0, _type, "");
+						newCC = new Component(c.getCode(), 0, _type, "");
 						newCC.processNewComponent();
 						break;
 						
 					case "4":
 						_type = "exam";
-						newCC = new CourseComponent(c.getCode(), 0, _type, "");
+						newCC = new Component(c.getCode(), 0, _type, "");
 						newCC.processNewComponent();
 						break;
 						
@@ -178,7 +178,7 @@ public class Menu {
 					choiceInt = Integer.parseInt(choice);
 					if (choiceInt > 0 && choiceInt <= componentList.size()) {
 						do {
-							CourseComponent cc = (CourseComponent) componentList.get(choiceInt-1);
+							Component cc = (Component) componentList.get(choiceInt-1);
 							int studentCount = StudentCourse.countStudentsByCourse(c.getCode());
 							
 							System.out.println("");
@@ -208,13 +208,13 @@ public class Menu {
 								if (_name.length() > 0) {
 									if (cc.getName().equals(_name))
 										System.out.println("\n  No change detected. Original name preserved.");
-									else if (CourseComponent.componentExists(cc.getType(), _name)) {
+									else if (Component.componentExists(cc.getType(), _name)) {
 										System.out.println("\n  " + TextFormat.capitalize(cc.getType()) + " " + _name + " already exists.");
 									}
 									else {
 										cc.setName(_name);
 										componentList.set(choiceInt-1, cc);
-										CourseComponent.save(componentList);
+										Component.save(componentList);
 									}
 								}
 								else
@@ -234,7 +234,7 @@ public class Menu {
 									if (_weightage > 0) {
 										cc.setWeightage(_weightage);
 										componentList.set(choiceInt-1, cc);
-										CourseComponent.save(componentList);
+										Component.save(componentList);
 									}
 									else {
 										System.out.println("\n  Invalid weightage. Component weightage has to be more than 0%.");
@@ -302,7 +302,7 @@ public class Menu {
 													else {
 														cc.setMarks(s, studentMarks);
 														componentList.set(choiceInt-1, cc);
-														CourseComponent.save(componentList);
+														Component.save(componentList);
 													}
 												}
 												catch (Exception e) {
@@ -332,7 +332,7 @@ public class Menu {
 									String deletedType = TextFormat.capitalize(cc.getType());
 									String deletedName = cc.getName();
 									deleted = componentList.remove(cc);
-									CourseComponent.save(componentList);
+									Component.save(componentList);
 									System.out.println("\n  Deleted " + deletedType + " " + deletedName);
 								}
 								break;
