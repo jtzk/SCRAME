@@ -57,7 +57,7 @@ public class ScrameApp {
 								try {
 									courseChoiceInt = Integer.parseInt(courseChoice);
 									if (courseChoiceInt > 0 && courseChoiceInt <= courseList.size()) {
-										Course c = (Course) courseList.get(courseChoiceInt);
+										Course c = (Course) courseList.get(courseChoiceInt-1);
 										Menu.courseComponentMenu(c.getCode());
 									}
 									else {
