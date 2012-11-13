@@ -25,15 +25,61 @@ public class ScrameApp {
 					break;
 					
 				case'4':
-					System.out.print("Enter course code: ");
-					String _courseCode=GetType.getString().toUpperCase();
-					String storeCourseTitle=Course.SearchCourse(_courseCode);
-					if(storeCourseTitle!=null){
-						System.out.println(storeCourseTitle + " (" + _courseCode + ") is found");
-						Menu.courseComponentMenu(_courseCode);
+					List courseList = Course.getCourseList();
+					
+					if (courseList.size() > 0) {
+						System.out.println("\nCourse list");
+						System.out.println("---------------");
+						for (int i = 0; i < courseList.size(); i++) {
+							Course c = (Course) courseList.get(i); 
+							System.out.println(i + 1 +") " + c.getCode() + " " + c.getTitle());
+						}
+						System.out.println();
+						System.out.println("0) Back to main menu");
+						System.out.println("Q) Exit program");
+						System.out.println("---------------");
+						System.out.print("Enter choice (or course code to search): ");
+						
+						String courseChoice = GetType.getString();
+						
+						switch (courseChoice) {
+							case "0":
+								System.out.println("\n  Exiting to main menu...");
+								break;
+								
+							case "q":
+							case "Q":
+								Menu.terminateMenu();
+								break;
+								
+							default:
+								int courseChoiceInt;
+								try {
+									courseChoiceInt = Integer.parseInt(courseChoice);
+									if (courseChoiceInt > 0 && courseChoiceInt <= courseList.size()) {
+										Course c = (Course) courseList.get(courseChoiceInt);
+										Menu.courseComponentMenu(c.getCode());
+									}
+									else {
+										System.out.println("\n  Invalid choice.");
+									}
+								}
+								catch (Exception e) {
+									courseChoice = courseChoice.toUpperCase();
+									String storeCourseTitle = Course.SearchCourse(courseChoice);
+									
+									if (storeCourseTitle != null) {
+										Menu.courseComponentMenu(courseChoice);
+									}
+									
+									else {
+										System.out.println("\n  There is no such course.");
+									}
+								}
+						}
 					}
 					else
-						System.out.println("There is no such course.");
+						System.out.println("\nThere are no courses in the system.");
 					
 					break;
 					

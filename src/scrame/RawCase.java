@@ -77,24 +77,13 @@ public class RawCase  {
 		 c[1] = new Course("Software Engineering", "CZ2006", 3);	
 		 c[2] = new Course("Human Resource Management", "CZ8003", 4);		
 		 c[3] = new Course("Green Computing", "CZ1002", 2);	
-		 c[4] = new Course("Engineering Math", "CZ1008", 3);	
+		 c[4] = new Course("Engineering Math", "CZ1008", 3);	 
 		 c[5] = new Course("Engineer and Society", "CZ0001", 4);
 		 
 		 for (int i = 0; i < 6; i++) {
-			if (c[i].newClass("SSP1", c[i].getCode(), 1) != null)
-				System.out.println("Added SSP1 to " + c[i].getCode());
-			else
-				System.out.println("Could not add SSP1 to " + c[i].getCode());
-			
-			if (c[i].newClass("SSP2", c[i].getCode(), 1) != null)
-				System.out.println("Added SSP2 to " + c[i].getCode());
-			else
-				System.out.println("Could not add SSP2 to " + c[i].getCode());
-			
-			if (c[i].newClass("SSP3", c[i].getCode(), 0) != null)
-				System.out.println("Added SSP3 to " + c[i].getCode());
-			else
-				System.out.println("Could not add SSP3 to " + c[i].getCode());
+			c[i].newClass("SSP1", c[i].getCode(), 20);
+			c[i].newClass("SSP2", c[i].getCode(), 20);
+			c[i].newClass("SSP3", c[i].getCode(), 10);
 			list.add(c[i]);
 		 }
 		 
@@ -235,4 +224,95 @@ public class RawCase  {
 		SerializeDB.writeSerializedObject("professorcourse.dat", list);
 
 	}
+	
+	public void rawAssignment()
+    	{
+	    	List<Assignment> list= Assignment.getAssignment();
+	    	Assignment[] ass = new Assignment[50];     
+	    	ass[0] = new Assignment("CZ2002", "assignment",10,1);
+	    	ass[1] = new Assignment("CZ2002", "assignment",10,2);
+	    	ass[2] = new Assignment("CZ0001", "assignment",5,1);
+	    	ass[3] = new Assignment("CZ1008", "assignment",6,1);
+	    	ass[4] = new Assignment("CZ1008", "assignment",7,2);
+	    	for (int i =0; i <5;i++){
+	    		list.add(ass[i]);
+	        }
+	                     
+	    	SerializeDB.writeSerializedObject("assignment.dat", list);
+    	}
+         
+   	 public void rawQuiz()
+    	 {
+    		List<Quiz> list= Quiz.getQuiz();
+    		Quiz[] qz = new Quiz[50];     
+    		qz[0] = new Quiz("CZ2002", "quiz",10,1);
+    		qz[1] = new Quiz("CZ2002", "quiz",10,2);
+    		qz[2] = new Quiz("CZ0001", "quiz",5,1);
+    		qz[3] = new Quiz("CZ1008", "quiz",6,1);
+    		qz[4] = new Quiz("CZ1008", "quiz",7,2);
+    		for (int i =0; i <5;i++){
+    			list.add(qz[i]);
+        	}
+                     
+    		SerializeDB.writeSerializedObject("quiz.dat", list);
+    	}
+      
+    	public void rawReport()
+    	{	
+    		List<Report> list= Report.getReport();
+    		Report[] rc = new Report[50];     
+    		rc[0] = new Report("CZ2002", "report",10,1);
+    		rc[1] = new Report("CZ2002", "report",10,2);
+    		rc[2] = new Report("CZ0001", "report",5,1);
+    		rc[3] = new Report("CZ1008", "report",6,1);
+    		rc[4] = new Report("CZ1008", "report",7,2);
+    		for (int i =0; i <5;i++){
+    			list.add(rc[i]);
+        	}
+                     
+    		SerializeDB.writeSerializedObject("report.dat", list);
+    	}
+    
+    	public void rawExam()
+    	{
+    		List<Exam> list= Exam.getExam();
+    		Exam[] em = new Exam[50];     
+    		em[0] = new Exam("CZ2002", "exam",10,1);
+    		em[1] = new Exam("CZ2002", "exam",10,2);
+    		em[2] = new Exam("CZ0001", "exam",5,1);
+    		em[3] = new Exam("CZ1008", "exam",6,1);
+    		em[4] = new Exam("CZ1008", "exam",7,2);
+    		for (int i =0; i <5;i++){
+    			list.add(em[i]);
+        	} 
+    		SerializeDB.writeSerializedObject("exam.dat", list);
+    	}
+    
+	public void rawTutorialEx()
+    	{
+    		List<TutorialEx> list= TutorialEx.getTutorialEx();
+    		TutorialEx[] tx = new TutorialEx[50];     
+    		tx[0] = new TutorialEx("CZ2002", "tutorial",10,1);
+    		tx[1] = new TutorialEx("CZ2002", "tutorial",10,2);
+    		tx[2] = new TutorialEx("CZ0001", "tutorial",5,1);
+    		tx[3] = new TutorialEx("CZ1008", "tutorial",6,1);
+    		tx[4] = new TutorialEx("CZ1008", "tutorial",7,2);
+    		for (int i =0; i <5;i++){
+    			list.add(tx[i]);
+        	}             
+    		SerializeDB.writeSerializedObject("tutorialex.dat", list);
+   	}
+    	
+    	public void rawAll()
+    	{
+    		rawStudent();
+    		rawProfessor();
+    		rawCourse();
+    		rawAssignment();
+    		rawProfessorCourse();
+    		rawQuiz();
+    		rawReport();
+    		rawExam();
+    		rawTutorialEx();
+    	}
 }
