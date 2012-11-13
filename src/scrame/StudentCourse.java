@@ -18,6 +18,14 @@ public class StudentCourse implements Serializable {
 		course = _course;
 	}
 	
+	public String getStudent() {
+		return student;
+	}
+	
+	public String getCourse() {
+		return course;
+	}
+	
 	// Get student registered courses {
 	public static List<Course> getStudentCourses(String _matric) {
 		List<StudentCourse> list = getRegisterList();
@@ -144,6 +152,17 @@ public class StudentCourse implements Serializable {
 		}
 		else
 			System.out.println("\nThere are no students registered for this course.");
+	}
+	
+	public static int countStudentsByCourse(String _course) {
+		List list = getRegisterList();
+		int count = 0;
+		for (int i = 0; i < list.size(); i++) {
+			StudentCourse r = (StudentCourse) list.get(i);
+			if (r.course.equals(_course))
+				count += 1;
+		}
+		return count;
 	}
 	
 	public static List getRegisterList() {
