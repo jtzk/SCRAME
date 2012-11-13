@@ -284,4 +284,30 @@ public class CourseComponent implements Serializable, Comparable<CourseComponent
 		else
 			System.out.println("\nThere are no courses in the system.");
 	}
+
+	public static void deleteCourse(String _course) {
+		List list = getComponentList();
+		for (int i = 0; i < list.size(); i++) {
+			CourseComponent cc = (CourseComponent) list.get(i);
+			if (cc.course.equals(_course)) {
+				list.remove(cc);
+			}
+		}
+		save(list);
+	}
+	
+	public static void deleteStudent(Student _student) {
+		List list = getComponentList();
+		for (int i = 0; i < list.size(); i++) {
+			CourseComponent cc = (CourseComponent) list.get(i);
+			for (int o = 0; o < cc.marks.size(); o++) {
+				Pair pair = (Pair) cc.marks.get(o);
+				if (pair.left.equals(_student)) {
+					cc.marks.remove(pair);
+					list.set(i, cc);
+				}
+			}
+		}
+		save(list);
+	}
 }

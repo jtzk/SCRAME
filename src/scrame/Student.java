@@ -1,4 +1,7 @@
 package scrame;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.*;
 
 public class Student extends Person implements Comparable<Student> {
@@ -358,6 +361,7 @@ public class Student extends Person implements Comparable<Student> {
 			System.out.println("1) Edit student");
 			System.out.println("2) Register for a course");
 			System.out.println("3) Show registered courses");
+			System.out.println("4) Print transcript");
 			System.out.println("D) Delete student");
 			System.out.println();
 			System.out.println("0) Back to student list");
@@ -456,7 +460,7 @@ public class Student extends Person implements Comparable<Student> {
 
 				break;
 
-				// Show registered courses
+			// Show registered courses
 			case "3":
 				System.out.println("\nRegistered courses:");
 				System.out.println("-------------------------");
@@ -488,6 +492,11 @@ public class Student extends Person implements Comparable<Student> {
 				}
 				break;
 
+			// Print transcript
+			case "4":
+				s.printTranscript();
+				break;
+				
 			case "d":
 			case "D":
 				char confirm = 'n';
@@ -498,6 +507,8 @@ public class Student extends Person implements Comparable<Student> {
 				if (confirm == 'y') {
 					// Update registered course list
 					StudentCourse.deleteStudent(s.getMatric());
+					// Update component list
+					CourseComponent.deleteStudent(s);
 
 					String deletedName = s.getName();
 					String deletedMatric = s.getMatric();
@@ -516,6 +527,50 @@ public class Student extends Person implements Comparable<Student> {
 		}  while (!choice.equals("0") && !choice.equals("q") && !choice.equals("Q") && !deleted);
 
 		return deleted;
+	}
+
+	private void printTranscript() {
+		System.out.println("");
+		System.out.println("Academic Transcript");
+		System.out.println("--------------------------------");
+		System.out.println("Name:              " + getName());
+		System.out.println("Matriculation no.: " + matric);
+		System.out.println("Year of study:     " + year);
+		System.out.println("");
+		List courseList = StudentCourse.getStudentCourses(matric);
+		// for each course, print score
+		int max = 0;
+		double totalAU = 0.0, totalGP = 0.0;
+		double GPA = 0.0;
+		for (int i = 0; i < courseList.size(); i++) {
+			Course c = (Course) courseList.get(i);
+			if ((c.getCode() + " " + c.getTitle()).length() + 3 > max) max = (c.getCode() + " " + c.getTitle()).length() + 3;
+			totalAU += c.getAU();
+		}
+		for (int i = 0; i < courseList.size(); i++) {
+			double score = 0.0;
+			Course c = (Course) courseList.get(i);
+			// for each component, add marks / weightage to score
+			List componentList = CourseComponent.getComponentListByCourse(c.getCode());
+			for (int o = 0; o < componentList.size(); o++) {
+				CourseComponent cc = (CourseComponent) componentList.get(o);
+				score += (double) (cc.getMarks(this) * cc.getWeightage() / 100);
+				if (score >= 80) totalGP += 4 * c.getAU();
+				else if (score >= 70) totalGP += 3 * c.getAU();
+				else if (score >= 60) totalGP += 2 * c.getAU();
+				else if (score >= 50) totalGP += c.getAU();
+			}
+			System.out.println(TextFormat.padRight(c.getCode() + " " + c.getTitle().toUpperCase() + ": ", max) + TextFormat.padRight(TextFormat.scoreToGrade(score), 7) + c.getAU() + " AUs");
+		}
+		GPA = (double) (totalGP / totalAU);
+		NumberFormat df = DecimalFormat.getInstance();
+		df.setMinimumFractionDigits(1);
+		df.setMaximumFractionDigits(4);
+		df.setRoundingMode(RoundingMode.DOWN);
+		System.out.println("\nTotal GP: " + totalGP);
+		System.out.println("Total AU: " + totalAU);
+		System.out.println("\nGPA: " + df.format(GPA));
+		System.out.println("--------------------------------");
 	}
 
 	private static void editStudent(Student s) {

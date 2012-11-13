@@ -40,6 +40,20 @@ public class StudentCourse implements Serializable {
 		return courseList;
 	}
 	
+	// Get course registered students {
+	public static List<Student> getCourseStudents(String _course) {
+		List<StudentCourse> list = getRegisterList();
+		List<Student> studentList = new ArrayList<Student>();
+		
+		for (int i = 0; i < list.size(); i++) {
+			StudentCourse r = (StudentCourse) list.get(i);
+			if (r.course.equals(_course))
+				studentList.add(Student.getStudentByMatric(_course));
+		}
+		
+		return studentList;
+	}
+	
 	// Check if student is registered
 	public static boolean isEnrolled(String _matric, String _course) {
 		if (_matric.length() > 0) {

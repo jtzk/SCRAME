@@ -216,11 +216,10 @@ public class Course implements Serializable, Comparable<Course> {
 		do {
 			System.out.println();
 			System.out.println("Course");
-			System.out.println("---------------------");
-			System.out.println("Code: " + c.getCode());
+			System.out.println("-------------------------------");
+			System.out.println("Code:  " + c.getCode());
 			System.out.println("Title: " + c.getTitle());
-			System.out.println("AU: " + c.getAU());
-			System.out.println("Classes: " + c.getClassList().size());
+			System.out.println("AU:    " + c.getAU());
 			System.out.println();
 			System.out.println("1) Edit course code");
 			System.out.println("2) Edit course title");
@@ -228,11 +227,12 @@ public class Course implements Serializable, Comparable<Course> {
 			System.out.println("4) Manage classes");
 			System.out.println("5) Show registered students");
 			System.out.println("6) Show coordinated professor");
+			System.out.println("7) Show course statistics");
 			System.out.println("D) Delete course");
 			System.out.println();
 			System.out.println("0) Back to course list");
 			System.out.println("Q) Exit program");
-			System.out.println("---------------------");
+			System.out.println("-------------------------------");
 			System.out.print("Enter choice: ");
 
 			choice = GetType.getString();
@@ -265,6 +265,10 @@ public class Course implements Serializable, Comparable<Course> {
 			case "6":
 				ProfessorCourse.printProfessorCourseList(c.code);
 				break;
+				
+			case "7":
+				c.printStatistics();
+				break;
 
 			case "d":
 			case "D":
@@ -276,6 +280,8 @@ public class Course implements Serializable, Comparable<Course> {
 				if (confirm == 'y') {
 					// Update registered course list
 					StudentCourse.deleteCourse(c.getCode());
+					// Update component list
+					CourseComponent.deleteCourse(c.getCode());
 					String deletedTitle = c.getTitle();
 					String deletedCode = c.getCode();
 
@@ -298,6 +304,17 @@ public class Course implements Serializable, Comparable<Course> {
 		}  while (!choice.equals("0") && !choice.equals("q") && !choice.equals("Q") && !deleted);
 
 		return deleted;
+	}
+
+	private void printStatistics() {
+		System.out.println("");
+		System.out.println(code + " Statistics");
+		System.out.println("------------------------------");
+		System.out.println("Students enrolled:       " + StudentCourse.countStudentsByCourse(code));
+		System.out.println("Tutorial/Lab classes:    " + getClassList().size());
+		List componentList = CourseComponent.getComponentListByCourse(code);
+		System.out.println("Components:              " + componentList.size());
+		System.out.println("------------------------------");
 	}
 
 	// Print classes
