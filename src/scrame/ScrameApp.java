@@ -67,7 +67,6 @@ public class ScrameApp {
 								}
 								catch (Exception e) {
 									courseChoice = courseChoice.toUpperCase();
-									System.out.println("\nSearching...\n");
 									String storeCourseTitle = Course.SearchCourse(courseChoice);
 									
 									if (storeCourseTitle != null) {
@@ -87,11 +86,8 @@ public class ScrameApp {
 					
 				case '5':
 					if(loaded==false){
-						rc.rawProfessor();
-						rc.rawStudent();
-						rc.rawCourse();
-				//		rc.rawClass();
-						rc.rawStudentCourse();
+						//Loaded All test cases
+						rc.rawAll();
 						loaded=true;
 						System.out.println("Loading rawcases.");
 					}

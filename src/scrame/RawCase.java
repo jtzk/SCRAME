@@ -308,6 +308,7 @@ public class RawCase  {
     		rawStudent();
     		rawProfessor();
     		rawCourse();
+    		rawStudentCourse();
     		rawAssignment();
     		rawProfessorCourse();
     		rawQuiz();
