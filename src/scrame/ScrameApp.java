@@ -26,8 +26,14 @@ public class ScrameApp {
 					
 				case'4':
 					System.out.print("Enter course code: ");
-					String _courseCode=GetType.getString();
-					Menu.CourseComponentMenu(_courseCode);
+					String _courseCode=GetType.getString().toUpperCase();
+					String storeCourseTitle=Course.SearchCourse(_courseCode);
+					if(storeCourseTitle!=null){
+						System.out.println(storeCourseTitle + " (" + _courseCode + ") is found");
+						Menu.courseComponentMenu(_courseCode);
+					}
+					else
+						System.out.println("There is no such course.");
 					
 					break;
 					
