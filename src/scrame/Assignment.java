@@ -66,6 +66,19 @@ public class Assignment extends CourseComponent{
 		return list;
 	}
 	
+	public static int getPercent(String _courseCode) {
+		List list = getAssignment();
+		if (list != null && list.size() > 0) {
+			for (int i = 0; i < list.size(); i++) {
+				Assignment ass = (Assignment) list.get(i);
+				if (ass.getCourseComponentCode().equals(_courseCode)) {
+					return ass.getCourseComponentPercent();
+				}
+			}
+		}
+		return 0;
+	}
+	
 	public static void displayAssignment(String _courseCode)
 	{
 		List list=getAssignment();

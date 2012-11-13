@@ -26,6 +26,7 @@ public class ScrameApp {
 					
 				case'4':
 					List courseList = Course.getCourseList();
+					Collections.sort(courseList);
 					
 					if (courseList.size() > 0) {
 						System.out.println("\nCourse list");
@@ -66,6 +67,7 @@ public class ScrameApp {
 								}
 								catch (Exception e) {
 									courseChoice = courseChoice.toUpperCase();
+									System.out.println("\nSearching...\n");
 									String storeCourseTitle = Course.SearchCourse(courseChoice);
 									
 									if (storeCourseTitle != null) {

@@ -66,6 +66,19 @@ public class Quiz extends CourseComponent{
 		return list;
 	}
 	
+	public static int getPercent(String _courseCode) {
+		List list = getQuiz();
+		if (list != null && list.size() > 0) {
+			for (int i = 0; i < list.size(); i++) {
+				Quiz q = (Quiz) list.get(i);
+				if (q.getCourseComponentCode().equals(_courseCode)) {
+					return q.getCourseComponentPercent();
+				}
+			}
+		}
+		return 0;
+	}
+	
 	public static void displayQuiz(String _courseCode)
 	{
 		List list=getQuiz();

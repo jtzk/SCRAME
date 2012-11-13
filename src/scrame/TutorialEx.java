@@ -66,6 +66,19 @@ public class TutorialEx extends CourseComponent{
 		return list;
 	}
 	
+	public static int getPercent(String _courseCode) {
+		List list = getTutorialEx();
+		if (list != null && list.size() > 0) {
+			for (int i = 0; i < list.size(); i++) {
+				TutorialEx t = (TutorialEx) list.get(i);
+				if (t.getCourseComponentCode().equals(_courseCode)) {
+					return t.getCourseComponentPercent();
+				}
+			}
+		}
+		return 0;
+	}
+	
 	public static void displayTutorialEx(String _courseCode)
 	{
 		List list=getTutorialEx();

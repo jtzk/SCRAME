@@ -66,6 +66,19 @@ public class Report extends CourseComponent{
 		return list;
 	}
 	
+	public static int getPercent(String _courseCode) {
+		List list = getReport();
+		if (list != null && list.size() > 0) {
+			for (int i = 0; i < list.size(); i++) {
+				Report r = (Report) list.get(i);
+				if (r.getCourseComponentCode().equals(_courseCode)) {
+					return r.getCourseComponentPercent();
+				}
+			}
+		}
+		return 0;
+	}
+	
 	public static void displayReport(String _courseCode)
 	{
 		List list=getReport();
