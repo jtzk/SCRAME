@@ -235,18 +235,4 @@ public class RawCase  {
 		SerializeDB.writeSerializedObject("professorcourse.dat", list);
 
 	}
-	//	public void rawClass() {
-//		List<Class> list= Class.getClassList();
-//		Class[] cl = new Class[40];
-//		 cl[0] = new Class("FE1", "CZ2002", 20);	
-//		 cl[1] = new Class("FE2", "CZ2006", 30);	
-//		 cl[2] = new Class("FE3", "CZ8003", 15);		
-//		 cl[3] = new Class("FE4", "CZ1002", 30);	
-//		 cl[4] = new Class("FE5", "CZ1008", 16);	
-//		 cl[5] = new Class("FE6", "CZ0001", 17);	
-//		 for (int i =0; i <6;i++)
-//			list.add(cl[i]);
-//
-//		SerializeDB.writeSerializedObject("class.dat", list);
-//	}
 }
