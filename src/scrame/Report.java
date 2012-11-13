@@ -34,7 +34,7 @@ public class Report extends CourseComponent{
 		Report rp1= new Report(_courseCode,courseType, _percent, index);
 		if (list == null) list = new ArrayList();
 			
-		int subtotal=_percent+sumUp(_courseCode);
+		int subtotal=_percent+sumUpAll(_courseCode);
 		if(balance>0&&subtotal<=100)
 		{		
 			list.add(rp1);

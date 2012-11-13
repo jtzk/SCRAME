@@ -1,6 +1,7 @@
 package scrame;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 
 public class CourseComponent implements Serializable{
@@ -56,6 +57,7 @@ public class CourseComponent implements Serializable{
 	public static String processCourseCode(String component) {
 		String _courseCode;
 		List list = Course.getCourseList();
+		Collections.sort(list);
 		do {
 			System.out.print("\nEnter " + component + "courseCode");			
 			_courseCode = GetType.getString();
