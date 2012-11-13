@@ -17,8 +17,8 @@ public class Assignment extends CourseComponent{
 		courseType="assignment";
 		List list = getAssignment();
 		System.out.println("\nAdding new " +courseType+ " Component");
-		System.out.println("-------------------------");	
-		int  _percent = processPercent(courseType);						
+		System.out.println("--------------------------------------------");	
+		int  _percent = processPercent(courseType.toLowerCase());						
 		int index=0;
 		int storeNo=0;
 		if (list != null && list.size() > 0) {
@@ -30,28 +30,25 @@ public class Assignment extends CourseComponent{
 			}
 		}
 		index=storeNo+1;
-		System.out.println("\n "+_courseCode +" "+ courseType +" "+ _percent+" " +index);
-		Assignment ass1= new Assignment(_courseCode,courseType, _percent, index);
-			if (list == null) list = new ArrayList();
-			
-			int subtotal=_percent+sumUp(_courseCode);
-			//System.out.println("subtotal"+subtotal);
-			if(balance>0&&subtotal<=100)
-			{		
-				list.add(ass1);
-				Assignment.save(list);		
-				System.out.println("\n "+ass1.getCourseComponentCode() + ass1.getCourseComponentPercent() + ass1.getIndex() +" added!");
-				//displayAssignment(_courseCode);
-				remain=balance-sumUp(_courseCode);
-			}
-			//else if(remain==0)
-			//	System.out.println("Course component ("+_courseCode+ ")"+" is done");
-			else{
-				System.out.println("\n "+ass1.getCourseComponentCode() + ass1.getCourseComponentPercent() + ass1.getIndex() +" not added! Exceeded balance");
-				remain=-1;
-			}
 
-			return remain;
+		Assignment ass1= new Assignment(_courseCode,courseType, _percent, index);
+		if (list == null) list = new ArrayList();	
+		int subtotal=_percent+sumUpAll(_courseCode);
+
+		if(balance>0&&subtotal<=100)
+		{		
+			list.add(ass1);
+			Assignment.save(list);		
+			System.out.println(courseType + index + " (" + _percent+ ")" +" added!");
+			remain=balance-_percent;
+		}
+		
+		else{
+			System.out.println(courseType + index + " (" + _percent+ ")" +" not added! Exceeded balance!");
+			remain=-1;
+		}
+
+		return remain;
 	}
 	
 	public static List getAssignment() {
@@ -73,12 +70,12 @@ public class Assignment extends CourseComponent{
 	{
 		List list=getAssignment();
 		String _courseTitle= Course.SearchCourse(_courseCode);
-		System.out.println("Tutorial course ("+_courseTitle+")");
+		System.out.println("Assignment course ("+_courseTitle+")");
 			if (list != null && list.size() > 0) {
 				for (int i = 0 ; i < list.size() ; i++) {
 					Assignment ass = (Assignment)list.get(i);
 					if(ass.getCourseComponentCode().compareTo(_courseCode)==0)
-					System.out.println("Tutorial excerise" + ass.getIndex() + " (" + ass.getCourseComponentPercent()+ ")");
+					System.out.println("Assignment" + ass.getIndex() + " (" + ass.getCourseComponentPercent()+ ")");
 				}
 			}
 			else {
@@ -87,7 +84,6 @@ public class Assignment extends CourseComponent{
 
 	}
 	
-
 	public static void displayAssignmentAll()
 	{
 		List list=getAssignment();
@@ -115,7 +111,6 @@ public class Assignment extends CourseComponent{
 				
 			}
 		}
-		//System.out.println("\nsum"+sum);
 		return sum;
 	}
 	
