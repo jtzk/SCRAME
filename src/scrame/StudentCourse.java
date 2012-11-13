@@ -49,26 +49,25 @@ public class StudentCourse implements Serializable {
 	public static boolean register(String _student, String _course) {
 	    if (_student.length() > 0) {
 	    	List list = getRegisterList();
-    		StudentCourse r;
-	    	int i = 0;
-	    	while (i < list.size()) {
-	    		r = (StudentCourse) list.get(i);
-	    		if (r.student.equals(_student) && r.course.equals(_course)) {
-	    			System.out.println("\nStudent is already registered for this course.");
-	    			break;
+
+	    	if (!isEnrolled(_student, _course)) {
+	    		try {
+		    		StudentCourse r = new StudentCourse(_student, _course);
+		    		list.add(r);
+		    		save(list);
+		    		System.out.println("\n  Student successfully enrolled in course.");
+		    		return true;
 	    		}
-	    		i++;
+	    		catch (Exception e) {
+	    			System.out.println("\n  Could not add student to course.");
+	    		}
 	    	}
-	    	if (i == list.size()) {
-	    		r = new StudentCourse(_student, _course);
-	    		list.add(r);
-	    		save(list);
-	    		System.out.println("\nStudent successfully enrolled in course.");
-	    		return true;
+	    	else {
+	    		System.out.println("\n  Student is already registered for this course.");
 	    	}
 	    }
 	    else {
-	    	System.out.println("\nStudent does not exist.");
+	    	System.out.println("\n  Student does not exist.");
 	    }
 		return false;
 	}

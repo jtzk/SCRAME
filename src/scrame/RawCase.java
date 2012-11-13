@@ -81,13 +81,20 @@ public class RawCase  {
 		 c[5] = new Course("Engineer and Society", "CZ0001", 4);
 		 
 		 for (int i = 0; i < 6; i++) {
-			c[i].newClass("SSP1", c[i].getCode(), 30);
-			c[i].newClass("SSP2", c[i].getCode(), 30);
-			c[i].newClass("SSP3", c[i].getCode(), 30);
-			c[i].newClass("SSP4", c[i].getCode(), 30);
-			c[i].newClass("SSP5", c[i].getCode(), 30);
-			c[i].newClass("SSP6", c[i].getCode(), 30);
-			System.out.println("Added courses to " + c[i].getCode());
+			if (c[i].newClass("SSP1", c[i].getCode(), 1) != null)
+				System.out.println("Added SSP1 to " + c[i].getCode());
+			else
+				System.out.println("Could not add SSP1 to " + c[i].getCode());
+			
+			if (c[i].newClass("SSP2", c[i].getCode(), 1) != null)
+				System.out.println("Added SSP2 to " + c[i].getCode());
+			else
+				System.out.println("Could not add SSP2 to " + c[i].getCode());
+			
+			if (c[i].newClass("SSP3", c[i].getCode(), 0) != null)
+				System.out.println("Added SSP3 to " + c[i].getCode());
+			else
+				System.out.println("Could not add SSP3 to " + c[i].getCode());
 			list.add(c[i]);
 		 }
 		 
@@ -209,6 +216,25 @@ public class RawCase  {
 	
 	}
 	
+	public void rawProfessorCourse() {
+		List<ProfessorCourse> list= Professor.getProfessorList("professorcourse.dat");
+		ProfessorCourse[] pc = new ProfessorCourse[50];
+
+		pc[0] = new ProfessorCourse("Joseph Lay", "CZ0001");
+		pc[1] = new ProfessorCourse("Mary yeo", "CZ0002");
+		pc[2] = new ProfessorCourse("Wong Ping", "CZ0006");
+		pc[3] = new ProfessorCourse("Colin Eng", "CZ8003");
+		pc[4] = new ProfessorCourse("Swee Peng", "CZ1002");
+		pc[5] = new ProfessorCourse("Kelvin Jones", "CZ1008");
+
+
+		for (int i =0; i <6;i++){
+			list.add(pc[i]);
+		}
+
+		SerializeDB.writeSerializedObject("professorcourse.dat", list);
+
+	}
 	//	public void rawClass() {
 //		List<Class> list= Class.getClassList();
 //		Class[] cl = new Class[40];

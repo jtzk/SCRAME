@@ -378,7 +378,7 @@ public class Student extends Person implements Comparable<Student> {
 					
 				case "2":
 					
-					List courseList = Course.getCourseList();
+					List<Course> courseList = Course.getCourseList();
 					Collections.sort(courseList);
 					if (courseList != null && courseList.size() > 0) {
 						System.out.println("\nSelect a course from the list");
@@ -397,50 +397,56 @@ public class Student extends Person implements Comparable<Student> {
 						int courseChoice = GetType.getInt() - 1;
 						if ( courseChoice >= 0 && courseChoice < courseList.size() ) {
 							c = (Course) courseList.get(courseChoice);
-							List classList = c.getClassList();
+							List<Class> classList = c.getClassList();
 							
-							StudentCourse.register(s.getMatric(), c.getCode());
-							
-							boolean studentFound = false;
-							
-							for (int i = 0; i < classList.size(); i++) {
-								Class cl = (Class) classList.get(i);
-								if (cl.inClass(s)) studentFound = true;
-							}
-							
-							if (studentFound)
-								System.out.println("\n  Student is already enrolled in a class.");
-							
-							else {
-								if (classList.size() > 0) {
-									System.out.println("Select class");
-									System.out.println("-----------------------");
+							if (classList.size() > 0) {
+								StudentCourse.register(s.getMatric(), c.getCode());
+								
+								if (StudentCourse.isEnrolled(s.getMatric(), c.getCode())) {
+									boolean studentFound = false;
+									
 									for (int i = 0; i < classList.size(); i++) {
 										Class cl = (Class) classList.get(i);
-										System.out.println(i + 1 + ") " + cl.getName() + " (Size: " + cl.getSize() + ", Vacancy: " + cl.getVacancy() + ")");
+										if (cl.inClass(s)) studentFound = true;
 									}
-									System.out.println("-----------------------");
-									System.out.print("Enter choice: ");
-									int classChoice = GetType.getInt();
 									
-									switch (classChoice) {
-										default:
-											if (classChoice > 0 && classChoice <= classList.size()) {
-												try {
-													Class cl = (Class) classList.get(classChoice-1);
-													cl.addStudent(s);
+									if (studentFound)
+										System.out.println("\n  Student is already enrolled in a class.");
+									
+									else {
+										System.out.println("Select class");
+										System.out.println("-----------------------");
+										for (int i = 0; i < classList.size(); i++) {
+											Class cl = (Class) classList.get(i);
+											System.out.println(i + 1 + ") " + cl.getName() + " (Size: " + cl.getSize() + ", Vacancy: " + cl.getVacancy() + ")");
+										}
+										System.out.println("-----------------------");
+										System.out.print("Enter choice: ");
+										int classChoice = GetType.getInt();
+										
+										switch (classChoice) {
+											default:
+												if (classChoice > 0 && classChoice <= classList.size()) {
+													try {
+														Class cl = classList.get(classChoice-1);
+														if (cl.getVacancy() > 0) {
+															cl.addStudent(s);
+															Course.save(courseList);
+														}
+														else System.out.println("\n  Could not add student: class " + cl.getName() + " is full.");
+													}
+													catch (Exception e) {
+														System.out.println("\n  Invalid choice.");
+													}
 												}
-												catch (Exception e) {
-													System.out.println("\n  Invalid choice.");
-												}
-											}
-											else System.out.println("\n  Invalid choice.");
-											break;
+												else System.out.println("\n  Invalid choice.");
+												break;
+										}
 									}
 								}
-								else
-									System.out.println("\nThere are no classes available for this course!");
 							}
+							else
+								System.out.println("\nThere are no classes available for this course!");
 						}
 					}
 					
@@ -466,14 +472,16 @@ public class Student extends Person implements Comparable<Student> {
 							boolean found = false;
 							List<Class> classList = c.getClassList();
 							for (int o = 0; o < classList.size(); o++) {
-								Class cl = classList.get(i);
-								if (cl.inClass(s)) System.out.print(" (" + cl.getName() + ")");
-								found = true;
+								Class cl = classList.get(o);
+								if (cl.inClass(s)) {
+									System.out.print(" (" + cl.getName() + ")");
+									found = true;
+								}
 							}
 							if (!found) System.out.print(" (No class)");
+							System.out.println();
 						}
-						System.out.println();
-						System.out.println("-------------------------");
+						System.out.println("\n-------------------------");
 					}
 					else {
 						System.out.println("The student is not registered for any courses.");

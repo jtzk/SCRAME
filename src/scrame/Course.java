@@ -9,7 +9,7 @@ public class Course implements Serializable, Comparable<Course> {
 	private String title;
 	private String code;
 	private int au;
-	private ArrayList<Class> classes;
+	private List<Class> classes;
 
 	public Course(String _title, String _code, int _au)
 	{
@@ -34,7 +34,7 @@ public class Course implements Serializable, Comparable<Course> {
 		return au;
 	}
 	
-	public ArrayList<Class> getClassList() {
+	public List<Class> getClassList() {
 		return classes;
 	}
 	
@@ -93,6 +93,7 @@ public class Course implements Serializable, Comparable<Course> {
 				case '1':
 					Course.printCourseList();
 					break;
+					
 				case '2':
 					System.out.println("\nAdding new course");
 					System.out.println("-------------------------");		
@@ -124,7 +125,7 @@ public class Course implements Serializable, Comparable<Course> {
 						c.save(list);			
 						System.out.println("\n  Course " + c.getTitle() + " added!");
 					}
-					
+					break;
 
 				case '3':
 					System.out.print("Enter the course code: ");
@@ -226,6 +227,7 @@ public class Course implements Serializable, Comparable<Course> {
 			System.out.println("3) Edit course AU");
 			System.out.println("4) Manage classes");
 			System.out.println("5) Show registered students");
+			System.out.println("6) Show coordinated professor");
 			System.out.println("D) Delete course");
 			System.out.println();
 			System.out.println("0) Back to course list");
@@ -258,6 +260,10 @@ public class Course implements Serializable, Comparable<Course> {
 					
 				case "5":
 					StudentCourse.printRegisterList(c.code);
+					break;
+				
+				case "6":
+					ProfessorCourse.printProfessorCourseList(c.code);
 					break;
 					
 				case "d":
@@ -297,7 +303,6 @@ public class Course implements Serializable, Comparable<Course> {
 	// Print classes
 	public void printClasses() {
 		String choice = "";
-		ArrayList<Class> classes = getClassList();
 		
 		do {
 			System.out.println("");
@@ -361,7 +366,8 @@ public class Course implements Serializable, Comparable<Course> {
 								case "0":
 									System.out.println("  Exiting to " + getCode() + " class list...");
 									break;
-									
+								
+								// Edit class name
 								case "1":
 									System.out.print("\nEnter new class name: ");
 									String _name = GetType.getString();
@@ -379,7 +385,8 @@ public class Course implements Serializable, Comparable<Course> {
 										}
 									}
 									break;
-									
+								
+								// Edit class size
 								case "2":
 									System.out.print("\nEnter new class size: ");
 									int _size = GetType.getInt();
@@ -396,6 +403,18 @@ public class Course implements Serializable, Comparable<Course> {
 										}
 									}
 									break;
+								
+								// View class list
+								case "3":
+									List<Course> list = getCourseList();
+									int courseIndex = list.indexOf(this);
+									if (courseIndex != -1) {
+										cl.printStudentList();
+										list.set(courseIndex, this);
+										save(list);
+									}
+									save(list);
+									break;
 									
 								case "d":
 								case "D":
@@ -407,10 +426,10 @@ public class Course implements Serializable, Comparable<Course> {
 									if (confirm == 'y') {
 										String deletedName = cl.getName();
 										
-										List list = getCourseList();
-										int courseIndex = list.indexOf(this);
+										list = getCourseList();
+										courseIndex = list.indexOf(this);
 										if (courseIndex != -1) {
-											deleted = getClassList().remove(cl);
+											deleted = classes.remove(cl);
 											list.set(courseIndex, this);
 											save(list);
 											System.out.println("\n  Deleted " + deletedName);

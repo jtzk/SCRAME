@@ -15,7 +15,7 @@ public class Class implements Serializable{
 	public Class(String _name, String _course, int _size) {
 		professorName = "";
 		name = _name;
-		course = Course.getCourseByCode(_course).getCode();
+		course = _course;
 		size = _size;
 		students = new ArrayList<Student>();
 	}
@@ -38,7 +38,8 @@ public class Class implements Serializable{
 		System.out.println("Edit Class");
 		System.out.println("------------------");
 		System.out.println("1) Name: " + name);
-		System.out.println("2) Size: " + size);
+		System.out.println("2) Size: " + size + " (Vacancy: " + getVacancy() + ")");
+		System.out.println("3) View student list");
 		System.out.println("D) Delete class");
 		System.out.println("");
 		System.out.println("0) Back to " + course + " class list");
@@ -79,6 +80,100 @@ public class Class implements Serializable{
 			students.add(s);
 			System.out.println(s.getName() + " (" + s.getMatric() + ") has been enrolled in this class.");
 		}
+	}
+	
+	// Remove student from class
+	public boolean removeStudent(Student s) {
+		if (students.remove(s)) return true;
+		return false;
+	}
+	
+	public void printStudentList() {
+		String choice = "";
+		do {
+			if (students.size() > 0) {
+				System.out.println("\n" + name + " Student list");
+				System.out.println("-----------------");
+				for (int i = 0; i < students.size(); i++) {
+					Student s = students.get(i);
+					System.out.println(i + 1 + ") " + s.getName() + " (" + s.getMatric() + ")");
+				}
+				System.out.println();
+				System.out.println("0) Back to " + name + " menu");
+				System.out.println("Q) Exit program");
+				System.out.println("-----------------");
+				System.out.print("Enter choice: ");
+				
+				choice = GetType.getString();
+				switch (choice) {
+					case "0":
+						System.out.println("  Exiting to " + name + " menu...");
+						break;
+						
+					case "q":
+					case "Q":
+						Menu.terminateMenu();
+						break;
+						
+					default:
+						int studentChoice;
+						String choice2;
+						try {
+							studentChoice = Integer.parseInt(choice);
+							if (studentChoice > 0 && studentChoice <= students.size()) {
+								Student s = students.get(studentChoice - 1);
+								
+								do {
+									System.out.println("\n" + name + " > " + s.getName());
+									System.out.println("-------------------");
+									System.out.println("1) Remove student from class");
+									System.out.println();
+									System.out.println("0) Back to " + name + " student list");
+									System.out.println("Q) Exit program");
+									System.out.println("-------------------");
+									System.out.print("Enter choice: ");
+									
+									choice2 = GetType.getString();
+									
+									switch(choice2) {
+										case "0":
+											System.out.println("  Exiting to " + name + " student list...");
+											break;
+											
+										case "1":
+											if (removeStudent(s)) {
+												System.out.println("\n  Removed student from class.");
+											}
+											else {
+												System.out.println("\n  Could not remove student from class.");
+											}
+											break;
+											
+										case "q":
+										case "Q":
+											Menu.terminateMenu();
+											break;
+											
+										default:
+											System.out.println("\n  Invalid choice.");
+									}
+								} while (!choice2.equals("0") && !choice2.equals("q") && !choice2.equals("Q") && !choice2.equals("1"));
+							}
+							
+							else {
+								System.out.println("\n  Invalid choice.");
+							}
+						}
+						catch (Exception e) {
+							System.out.println("\n  Invalid choice.");
+						}
+						break;
+				}
+			}
+			else {
+				System.out.println("\nThere are no students enrolled in this class.");
+			}
+		} while (students.size() > 0 && !choice.equals("0") && !choice.equals("q") && !choice.equals("Q"));
 	}
 	
 	// Static methods
