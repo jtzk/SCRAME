@@ -30,28 +30,25 @@ public class Report extends CourseComponent{
 			}
 		}
 		index=storeNo+1;
-		System.out.println("\n "+_courseCode +" "+ courseType +" "+ _percent+" " +index);
+		
 		Report rp1= new Report(_courseCode,courseType, _percent, index);
-			if (list == null) list = new ArrayList();
+		if (list == null) list = new ArrayList();
 			
-			int subtotal=_percent+sumUp(_courseCode);
-			//System.out.println("subtotal"+subtotal);
-			if(balance>0&&subtotal<=100)
-			{		
-				list.add(rp1);
-				Report.save(list);		
-				System.out.println("\n "+rp1.getCourseComponentCode() + rp1.getCourseComponentPercent() + rp1.getIndex() +" added!");
-				displayReportAll();
-				remain=balance-sumUp(_courseCode);
-			}
-			//else if(remain==0)
-			//	System.out.println("Course component ("+_courseCode+ ")"+" is done");
-			else{
-				System.out.println("\n "+rp1.getCourseComponentCode() + rp1.getCourseComponentPercent() + rp1.getIndex() +" not added! Exceeded balance");
-				remain=-1;
-			}
+		int subtotal=_percent+sumUp(_courseCode);
+		if(balance>0&&subtotal<=100)
+		{		
+			list.add(rp1);
+			Report.save(list);		
+			System.out.println(courseType + index + " (" + _percent+ ")" +" added!");
+			remain=balance-_percent;
+		}
+			
+		else{
+			System.out.println(courseType + index + " (" + _percent+ ")" +" not added! Exceeded balance!");
+			remain=-1;
+		}
 
-			return remain;
+		return remain;
 	}
 	
 	public static List getReport() {
@@ -82,11 +79,10 @@ public class Report extends CourseComponent{
 				}
 			}
 			else {
-				System.out.println("There are no report for this " + _courseTitle);
+				System.out.println("There are no reports for this " + _courseTitle);
 			}
-
+			
 	}
-	
 
 	public static void displayReportAll()
 	{
@@ -98,7 +94,7 @@ public class Report extends CourseComponent{
 				}
 			}
 			else {
-				System.out.println("There are no report");
+				System.out.println("There are no reports");
 			}
 
 	}
@@ -115,7 +111,6 @@ public class Report extends CourseComponent{
 				
 			}
 		}
-		//System.out.println("\nsum"+sum);
 		return sum;
 	}
 	
