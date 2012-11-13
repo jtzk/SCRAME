@@ -18,8 +18,7 @@ public class Menu {
 	public static void showMenu(String MenuTitle) {
 		System.out.println();
 		System.out.println(MenuTitle + " Menu");
-		System.out.println("-----------------------");
-		
+		System.out.println("-----------------------");		
 		System.out.println("1) List " + MenuTitle.toLowerCase() + "s");
 		System.out.println("2) Add a "+ MenuTitle.toLowerCase());
 		System.out.println("3) Search for " + MenuTitle.toLowerCase());
@@ -52,12 +51,11 @@ public class Menu {
 		 int max=100;
 		 int remain=CourseComponent.sumUpAll(_courseCode);
 		 int componentAmount=0,choice=0,sumUpAll=0;
-		 if(CourseComponent.sumUpAll(_courseCode)<100){
-			 System.out.print("Enter component amount: ");
-		 	componentAmount=GetType.getInt();
-		 }
 		 
-		 while(componentAmount>0&&CourseComponent.sumUpAll(_courseCode)<100)
+		 if (CourseComponent.sumUpAll(_courseCode)==max)
+				System.out.println("Component percent completed");		
+		 
+		 while(CourseComponent.sumUpAll(_courseCode)<max)
 		 {
 			 	int remainR=100-CourseComponent.sumUpAll(_courseCode);
 			 	System.out.println("Remain "+remainR);
@@ -77,102 +75,37 @@ public class Menu {
 				{
 					
 					case 1:
-						if(sumUpAll<100)
-						{
+						if(sumUpAll<max)
 							remain=Assignment.addAssignment(_courseCode, remainR);
-							if (remain<0){
-								//increase counter to request user add 1 more component
-								componentAmount+=1;
-							}
-							else if(remain >0){
-								//increase counter to request user add 1 more component
-								componentAmount+=1;
-								System.out.println("Component percent not full.");
-							}
-						}
-						
 						break;
 						
 					case 2:
-						System.out.println("");
-						if(sumUpAll<100)
-						{
+						if(sumUpAll<max)
 							remain=Quiz.addQuiz(_courseCode, remainR);
-							if (remain<0){
-								//increase counter to request user add 1 more component
-								componentAmount+=1;
-							}
-							else if(remain >0){
-								//increase counter to request user add 1 more component
-								componentAmount+=1;
-								System.out.println("Component percent not full.");
-							}
-						}
 						break;
 						
 					case 3:
-						System.out.println("");
-						if(sumUpAll<100)
-						{
+						if(sumUpAll<max)
 							remain=Report.addReport(_courseCode, remainR);
-							if (remain<0){
-								//increase counter to request user add 1 more component
-								componentAmount+=1;
-							}
-							else if(remain >0){
-								//increase counter to request user add 1 more component
-								componentAmount+=1;
-								System.out.println("Component percent not full.");
-							}
-						}
 						break;
 						
 					case 4: 
-						System.out.println("");
-						if(sumUpAll<100)
-						{
+						if(sumUpAll<max)
 							remain=Exam.addExam(_courseCode,remainR);
-							if (remain<0){
-								//increase counter to request user add 1 more component
-								componentAmount+=1;
-							}
-							else if(remain >0){
-								//increase counter to request user add 1 more component
-								componentAmount+=1;
-								System.out.println("Component percent not full.");
-							}
-						}
+
 						break;
 						
 					case 5:
-						System.out.println("");
-						if(sumUpAll<100)
-						{
+						if(sumUpAll<max)
 							remain=TutorialEx.addTutorial(_courseCode, remainR);
-							if (remain<0){
-								//increase counter to request user add 1 more component
-								componentAmount+=1;
-							}
-							else if(remain >0||componentAmount==0){
-								//increase counter to request user add 1 more component
-								componentAmount+=1;
-								System.out.println("Component percent not full.");
-							}
-						}
-						
 						break;
 						
 					default:
 						System.out.println("Invalid Choice");
-						//increase counter to request user add 1 more component
-						componentAmount+=1;
 						break;
 				}//end switch
-				componentAmount--;
-			}
-			if (remain==0)
-			{
-				System.out.println("Component percent completed");		
-			}
+				if (remain==0)
+					System.out.println("Component percent completed");
+			}//end while
 		}
 }
