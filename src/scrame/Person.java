@@ -97,7 +97,7 @@ public class Person implements Serializable{
 			if (_gender == 'f' || _gender == 'F') return 'F';
 			else if (_gender == 'm' || _gender == 'M') return 'M';
 			else {
-				System.out.println("\n  Error; Invalid gender. Only 'M' or 'F' is allowed.\n");
+				System.out.println("\n  Error: Invalid gender. Only 'M' or 'F' is allowed.\n");
 			}
 		} while (true);
 	}
